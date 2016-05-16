@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.springframework.cloud</groupId>
-    <artifactId>spring-cloud-vault-hello-world</artifactId>
+    <artifactId>spring-cloud-vault-appid</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>Hello World</name>
-    <description>Demo project using Spring Cloud Vault with Token authentication</description>
+    <name>AppId</name>
+    <description>Demo project using Spring Cloud Vault with AppId authentication</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
