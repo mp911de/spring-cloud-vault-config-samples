@@ -13,8 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.springframework.cloud.vault;
+package example.appid;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -24,7 +23,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Sample Application using Spring Cloud Vault.
+ * Sample Application using Spring Cloud Vault with AppId authentication.
  *
  * @author Mark Paluch
  */
