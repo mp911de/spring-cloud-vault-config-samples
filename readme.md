@@ -10,6 +10,7 @@ Open a console in the `vault` directory:
 
 ```bash
 $ ./install_vault.sh # Download and unzip vault
+$ ./create_certificates.sh # Create SSL certificates
 $ ./start-vault.sh 
 ```
 
@@ -48,13 +49,12 @@ $ ./vault unseal 0c5605b16905794a302603bbeb8f6c8ad5ecf7e877f0e29084f838eba931b86
 $ export VAULT_TOKEN=9a63de21-8af7-311a-9a5a-151b6a0d4795
 ```
 
-
 ## Write Data to Vault
 
 Writes the key-value pair `mykey=value` to the path `secret/my-spring-boot-app`.
 
 ```
-$ ./vault write secret/my-spring-boot-app a=b
+$ ./vault write secret/my-spring-boot-app mykey=value
 ```
 
 ## AppId Authentication
@@ -67,5 +67,4 @@ Prerequisite: Identify a connected network interface and store it in `bootstrap.
 $ ./mac-address-sha256.sh en0 # Prints the hex-encoded SHA-256
 $ ./setup-appid.sh 2dab8c4b8a8cc2f0a191aa4a18f5cc457dbadd07111e23e86f180e84f58b56bf
 ```
-
 
