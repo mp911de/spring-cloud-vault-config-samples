@@ -16,6 +16,7 @@ install:
 before_script:
   - mysql -e "CREATE USER 'spring' IDENTIFIED by 'vault';"
   - mysql -uroot -e "GRANT ALL PRIVILEGES ON *.* TO 'spring'@'%' WITH GRANT OPTION;";
+  - source src/test/bash/env.sh && src/test/bash/setup_examples.sh
 
 script: mvn clean verify
 
