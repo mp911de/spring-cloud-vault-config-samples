@@ -24,7 +24,7 @@
 
 	<properties>
 		<java.version>1.7</java.version>
-		<vault.version>1.0.0.BUILD-SNAPSHOT</vault.version>
+		<springcloud.vault.version>1.0.0.BUILD-SNAPSHOT</springcloud.vault.version>
 	</properties>
 
 	<developers>
@@ -34,6 +34,18 @@
 			<email>mpaluch@pivotal.io</email>
 		</developer>
 	</developers>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-vault-dependencies</artifactId>
+				<version>${project.version}</version>
+				<scope>import</scope>
+				<type>pom</type>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<dependencies>
 
@@ -45,12 +57,6 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
 			<scope>provided</scope>
 		</dependency>
 

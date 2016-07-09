@@ -16,18 +16,12 @@
 	<description>Demo project using Spring Cloud Vault with AppId authentication</description>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-vault-config</artifactId>
-			<version>${vault.version}</version>
-		</dependency>
 
 		<dependency>
-			<groupId>com.squareup.okhttp</groupId>
-			<artifactId>okhttp</artifactId>
-			<version>2.7.5</version>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-vault-starter-config</artifactId>
 		</dependency>
+
 	</dependencies>
 
 </project>
-
