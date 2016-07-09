@@ -7,14 +7,21 @@ usage with the MySQL integration.
 Vault will obtain Username/Password for you so you'll be able to
 use a generated login.
 
-Make sure to have Vault initialized. Set the token in
-`src/main/resources/bootstrap.properties` to the property
-`spring.cloud.vault.token`.
+## Running the Example
 
-Please initialize Vault and follow the MySQL setup guide at
-https://www.vaultproject.io/docs/secrets/mysql/index.html.
-You need a running MySQL instance and you need to set the
-`spring.cloud.vault.mysql.role` property.
+The MySQL example requires a running MySQL database
+on `localhost:3306` with an user that is authorized
+to create new users.
 
-Vault runs with SSL enabled so make sure the application runs
-in the current directory so it can find `work/keystore.jks`.
+The example setup script `src/test/bash/setup_examples.sh`
+will use the user `spring` with the password `vault`
+as administrative MySQL user.
+
+You can run the following lines to setup your local MySQL server
+for Vault
+
+```bash
+$ mysql -e "CREATE USER 'spring' IDENTIFIED by 'vault';"
+$ mysql -uroot -e "GRANT ALL PRIVILEGES ON *.* TO 'spring'@'%' WITH GRANT OPTION;";
+```
+

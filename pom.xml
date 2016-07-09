@@ -24,7 +24,7 @@
 
 	<properties>
 		<java.version>1.7</java.version>
-		<springcloud.vault.version>1.0.0.BUILD-SNAPSHOT</springcloud.vault.version>
+		<spring-cloud-vault.version>1.0.0.BUILD-SNAPSHOT</spring-cloud-vault.version>
 	</properties>
 
 	<developers>
@@ -40,7 +40,7 @@
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-vault-dependencies</artifactId>
-				<version>${project.version}</version>
+				<version>${spring-cloud-vault.version}</version>
 				<scope>import</scope>
 				<type>pom</type>
 			</dependency>

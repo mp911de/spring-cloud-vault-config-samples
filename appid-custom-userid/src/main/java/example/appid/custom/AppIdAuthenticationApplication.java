@@ -27,10 +27,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author Mark Paluch
  */
 @SpringBootApplication
-public class SpringBootVaultAppIdAuthenticationApplication {
+public class AppIdAuthenticationApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringBootVaultAppIdAuthenticationApplication.class, args);
+		SpringApplication.run(AppIdAuthenticationApplication.class, args);
 	}
 
 	@Value("${mykey}")

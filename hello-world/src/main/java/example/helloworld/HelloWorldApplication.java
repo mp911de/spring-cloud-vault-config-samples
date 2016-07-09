@@ -27,10 +27,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author Mark Paluch
  */
 @SpringBootApplication
-public class SpringBootVaultHelloWorldApplication {
+public class HelloWorldApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringBootVaultHelloWorldApplication.class, args);
+		SpringApplication.run(HelloWorldApplication.class, args);
 	}
 
 	@Value("${mykey}")

@@ -33,10 +33,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author Mark Paluch
  */
 @SpringBootApplication
-public class SpringBootVaultMySqlApplication {
+public class MySqlApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringBootVaultMySqlApplication.class, args);
+		SpringApplication.run(MySqlApplication.class, args);
 	}
 
 	@Autowired
@@ -47,16 +47,16 @@ public class SpringBootVaultMySqlApplication {
 
 		System.out.println("##########################");
 
-		Connection connection = dataSource.getConnection();
-		Statement statement = connection.createStatement();
-		ResultSet resultSet = statement.executeQuery("SELECT CURRENT_USER();");
-		resultSet.next();
+		try (Connection connection = dataSource.getConnection();
+				Statement statement = connection.createStatement()) {
 
-		System.out.println("Connection works with User: " + resultSet.getString(1));
+			ResultSet resultSet = statement.executeQuery("SELECT CURRENT_USER();");
+			resultSet.next();
 
-		resultSet.close();
-		statement.close();
-		connection.close();
+			System.out.println("Connection works with User: " + resultSet.getString(1));
+
+			resultSet.close();
+		}
 
 		System.out.println("##########################");
 	}

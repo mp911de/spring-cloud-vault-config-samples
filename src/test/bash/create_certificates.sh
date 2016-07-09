@@ -1,8 +1,9 @@
 #!/bin/bash
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-CA_DIR=${DIR}/../work/ca
-JKS_FILE=${DIR}/../work/keystore.jks
+CA_DIR=${DIR}/../../../work/ca
+RESOURCES_DIR=${DIR}/../resources
+JKS_FILE=${DIR}/../../../work/keystore.jks
 if [[ -d ${CA_DIR} ]] ; then
     rm -Rf ${CA_DIR}
 fi
@@ -13,6 +14,8 @@ fi
 
 mkdir -p ${CA_DIR}/private ${CA_DIR}/certs ${CA_DIR}/crl ${CA_DIR}/csr ${CA_DIR}/newcerts ${CA_DIR}/intermediate
 
+cd ${CA_DIR}
+
 echo "[INFO] Generating CA private key"
 # Less bits = less secure = faster to generate
 openssl genrsa -passout pass:changeit -aes256 -out ${CA_DIR}/private/ca.key.pem 2048
@@ -20,7 +23,7 @@ openssl genrsa -passout pass:changeit -aes256 -out ${CA_DIR}/private/ca.key.pem 
 chmod 400 ${CA_DIR}/private/ca.key.pem
 
 echo "[INFO] Generating CA certificate"
-openssl req -config ${DIR}/openssl.cnf \
+openssl req -config ${RESOURCES_DIR}/openssl.cnf \
       -key ${CA_DIR}/private/ca.key.pem \
       -new -x509 -days 7300 -sha256 -extensions v3_ca \
       -out ${CA_DIR}/certs/ca.cert.pem \
@@ -43,14 +46,14 @@ openssl rsa -in ${CA_DIR}/private/localhost.key.pem \
 chmod 400 ${CA_DIR}/private/localhost.key.pem
 
 echo "[INFO] Generating server certificate request"
-openssl req -config ${DIR}/openssl.cnf \
+openssl req -config ${RESOURCES_DIR}/openssl.cnf \
       -key ${CA_DIR}/private/localhost.key.pem \
       -passin pass:changeit \
       -new -sha256 -out ${CA_DIR}/csr/localhost.csr.pem \
       -subj "/C=NN/ST=Unknown/L=Unknown/O=spring-cloud-vault-config/CN=localhost"
 
 echo "[INFO] Signing certificate request"
-openssl ca -config ${DIR}/openssl.cnf \
+openssl ca -config ${RESOURCES_DIR}/openssl.cnf \
       -extensions server_cert -days 375 -notext -md sha256 \
       -passin pass:changeit \
       -keyfile ${CA_DIR}/private/ca.key.pem \
