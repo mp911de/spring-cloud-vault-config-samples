@@ -1,0 +1,29 @@
+machine:
+  java:
+    version: oraclejdk8
+
+  services:
+    - mysql
+
+dependencies:
+  pre:
+    - mkdir -p download
+    - src/test/bash/create_certificates.sh
+    - src/test/bash/install_vault.sh
+    - src/test/bash/local_run_vault.sh:
+        background: true
+    - sleep 2
+    - mysql -e "CREATE USER 'spring' IDENTIFIED by 'vault';"
+    - mysql -uroot -e "GRANT ALL PRIVILEGES ON *.* TO 'spring'@'%' WITH GRANT OPTION;";
+    - source src/test/bash/env.sh && src/test/bash/setup_examples.sh
+
+  cache_directories:
+    - "~/.m2/repository"
+    - "download"
+
+test:
+  post:
+    - mkdir -p $CIRCLE_TEST_REPORTS/junit/
+    - find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
+
+
