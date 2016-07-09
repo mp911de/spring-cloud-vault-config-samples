@@ -13,33 +13,51 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.cloud.vault.samples.simple;
+package example.mysql;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 import javax.annotation.PostConstruct;
+import javax.sql.DataSource;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * Sample Application using Spring Cloud Vault with Token authentication.
+ * Sample Application using Spring Cloud Vault with Token authentication. Vault will
+ * obtain MySQL credentials to be used with a {@link javax.activation.DataSource}.
  *
  * @author Mark Paluch
  */
 @SpringBootApplication
-public class SpringBootVaultHelloWorldApplication {
+public class SpringBootVaultMySqlApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringBootVaultHelloWorldApplication.class, args);
+		SpringApplication.run(SpringBootVaultMySqlApplication.class, args);
 	}
 
-	@Value("${mykey}")
-	String mykey;
+	@Autowired
+	DataSource dataSource;
 
 	@PostConstruct
-	private void postConstruct() {
+	private void postConstruct() throws Exception {
+
 		System.out.println("##########################");
-		System.out.println(mykey);
+
+		Connection connection = dataSource.getConnection();
+		Statement statement = connection.createStatement();
+		ResultSet resultSet = statement.executeQuery("SELECT CURRENT_USER();");
+		resultSet.next();
+
+		System.out.println("Connection works with User: " + resultSet.getString(1));
+
+		resultSet.close();
+		statement.close();
+		connection.close();
+
 		System.out.println("##########################");
 	}
 }

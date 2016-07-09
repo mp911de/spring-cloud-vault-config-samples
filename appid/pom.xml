@@ -5,12 +5,12 @@
 
 	<parent>
 		<groupId>org.springframework.cloud.vault.examples</groupId>
-		<artifactId>spring-cloud-vault-samples</artifactId>
+		<artifactId>spring-cloud-vault-examples</artifactId>
 		<version>1.0.0.BUILD-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
 
-	<artifactId>spring-cloud-vault-appid</artifactId>
+	<artifactId>spring-cloud-vault-appid-example</artifactId>
 
 	<name>Spring Cloud Vault Config AppId authentication</name>
 	<description>Demo project using Spring Cloud Vault with AppId authentication</description>

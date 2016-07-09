@@ -3,11 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.springframework.cloud.vault.examples</groupId>
-	<artifactId>spring-cloud-vault-samples</artifactId>
+	<artifactId>spring-cloud-vault-examples</artifactId>
 	<version>1.0.0.BUILD-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<name>Spring Cloud Vault - Samples</name>
+	<name>Spring Cloud Vault - Examples</name>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
