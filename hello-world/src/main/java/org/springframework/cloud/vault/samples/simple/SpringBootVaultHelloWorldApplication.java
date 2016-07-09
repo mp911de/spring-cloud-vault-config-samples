@@ -15,12 +15,11 @@
  */
 package org.springframework.cloud.vault.samples.simple;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * Sample Application using Spring Cloud Vault with Token authentication.
@@ -34,24 +33,13 @@ public class SpringBootVaultHelloWorldApplication {
 		SpringApplication.run(SpringBootVaultHelloWorldApplication.class, args);
 	}
 
-	@Configuration
-	static class Config {
+	@Value("${mykey}")
+	String mykey;
 
-		@Value("${mykey}")
-		String mykey;
-
-		@Bean
-		CommandLineRunner commandLineRunner() {
-
-			return new CommandLineRunner() {
-				@Override
-				public void run(String... strings) throws Exception {
-
-					System.out.println("##########################");
-					System.out.println(mykey);
-					System.out.println("##########################");
-				}
-			};
-		}
+	@PostConstruct
+	private void postConstruct() {
+		System.out.println("##########################");
+		System.out.println(mykey);
+		System.out.println("##########################");
 	}
 }

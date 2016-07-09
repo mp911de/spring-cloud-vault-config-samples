@@ -19,14 +19,12 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * Sample Application using Spring Cloud Vault with Token authentication. Vault will
@@ -41,35 +39,25 @@ public class SpringBootVaultMySqlApplication {
 		SpringApplication.run(SpringBootVaultMySqlApplication.class, args);
 	}
 
-	@Configuration
-	static class Config {
+	@Autowired
+	DataSource dataSource;
 
-		@Autowired
-		DataSource dataSource;
+	@PostConstruct
+	private void postConstruct() throws Exception {
 
-		@Bean
-		CommandLineRunner commandLineRunner() {
+		System.out.println("##########################");
 
-			return new CommandLineRunner() {
-				@Override
-				public void run(String... strings) throws Exception {
+		Connection connection = dataSource.getConnection();
+		Statement statement = connection.createStatement();
+		ResultSet resultSet = statement.executeQuery("SELECT CURRENT_USER();");
+		resultSet.next();
 
-					System.out.println("##########################");
-					Connection connection = dataSource.getConnection();
-					Statement statement = connection.createStatement();
-					ResultSet resultSet = statement.executeQuery("SELECT CURRENT_USER();");
-					resultSet.next();
+		System.out.println("Connection works with User: " + resultSet.getString(1));
 
-					System.out.println(
-							"Connection works with User: " + resultSet.getString(1));
+		resultSet.close();
+		statement.close();
+		connection.close();
 
-					resultSet.close();
-					statement.close();
-					connection.close();
-
-					System.out.println("##########################");
-				}
-			};
-		}
+		System.out.println("##########################");
 	}
 }
