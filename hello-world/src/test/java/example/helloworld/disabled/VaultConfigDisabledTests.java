@@ -25,7 +25,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.junit4.SpringRunner;
-import sun.security.krb5.Config;
 
 /**
  * Spring Cloud Vault Config can be disabled with properties.
@@ -33,7 +32,7 @@ import sun.security.krb5.Config;
  * @author Mark Paluch
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(properties = "spring.cloud.vault.enabled=false", classes = Config.class)
+@SpringBootTest(properties = "spring.cloud.vault.enabled=false", classes = VaultConfigDisabledTests.Config.class)
 public class VaultConfigDisabledTests {
 
 	@SpringBootApplication

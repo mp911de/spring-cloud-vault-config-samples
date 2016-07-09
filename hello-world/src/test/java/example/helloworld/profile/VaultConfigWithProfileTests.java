@@ -27,8 +27,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import sun.security.krb5.Config;
-
 /**
  * Spring Cloud Vault Config can use profiles to retrieve properties from different
  * contexts.
@@ -36,7 +34,7 @@ import sun.security.krb5.Config;
  * @author Mark Paluch
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = Config.class)
+@SpringBootTest(classes = VaultConfigWithProfileTests.Config.class)
 @ActiveProfiles("cloud")
 public class VaultConfigWithProfileTests {
 
