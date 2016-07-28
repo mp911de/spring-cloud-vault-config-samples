@@ -6,6 +6,7 @@ echo "##########################################################################
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 VAULT_BIN="${DIR}/../../../vault/vault"
+WORK_DIR="${DIR}/../../../work"
 
 echo "vault auth-enable app-id"
 ${VAULT_BIN} auth-enable app-id
@@ -38,6 +39,20 @@ else
     echo "# MySQL not running, skip MySQL integration setup                         #"
     echo "###########################################################################"
 fi
+
+
+echo "###########################################################################"
+echo "# Setup PKI integration                                                   #"
+echo "###########################################################################"
+
+echo "vault mount pki"
+${VAULT_BIN} mount pki
+
+echo 'cat ${CERT_AND_KEY} | vault write pki/config/ca pem_bundle=-'
+cat ${WORK_DIR}/ca/certs/intermediate.cert.pem ${WORK_DIR}/ca/private/intermediate.decrypted.key.pem | ${VAULT_BIN} write pki/config/ca pem_bundle=-
+
+echo 'vault write pki/roles/ssl allowed_domains=localhost allow_localhost=true max_ttl=72h'
+${VAULT_BIN} write pki/roles/ssl allowed_domains=localhost allow_localhost=true max_ttl=72h
 
 
 echo "###########################################################################"

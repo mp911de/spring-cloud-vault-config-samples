@@ -20,6 +20,7 @@
 		<module>appid</module>
 		<module>appid-custom-userid</module>
 		<module>mysql</module>
+		<module>ssl-certificates</module>
 	</modules>
 
 	<properties>
