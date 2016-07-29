@@ -3,6 +3,8 @@ language: java
 services:
   - mysql
 
+sudo: false
+
 matrix:
   include:
     - jdk: oraclejdk7
