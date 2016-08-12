@@ -16,7 +16,6 @@ ${VAULT_BIN} write auth/app-id/map/app-id/my-spring-boot-app value=root display_
 echo "vault write auth/app-id/map/user-id/my-static-userid value=my-spring-boot-app"
 ${VAULT_BIN} write auth/app-id/map/user-id/my-static-userid value=my-spring-boot-app
 
-
 nc -w 1 localhost 3306 > /dev/null
 
 if [[ $? == 0 ]] ; then
@@ -39,6 +38,36 @@ else
     echo "###########################################################################"
 fi
 
+nc -w 1 localhost 8500 > /dev/null
+
+if [[ $? == 0 ]] ; then
+
+    echo "###########################################################################"
+    echo "# Setup Consul integration                                                 #"
+    echo "###########################################################################"
+
+    echo "vault mount consul"
+    ${VAULT_BIN} mount consul
+
+    TOKEN_JSON=$(curl -d "{\"Name\": \"sample\", \"Type\": \"management\"}" \
+            -H "X-Consul-Token: consul-master-token" \
+            -X PUT \
+            http://localhost:8500/v1/acl/create)
+
+    TOKEN=$(echo ${TOKEN_JSON}| cut -c 8-43)
+
+    echo "vault write consul/config/access address=localhost:8500 token=${TOKEN}"
+    ${VAULT_BIN} write consul/config/access address=localhost:8500 token=${TOKEN}
+
+    echo "vault write consul/roles/readonly policy=…"
+    POLICY=$(echo -n "key \"\" { policy = \"read\" }" | base64)
+    ${VAULT_BIN} write consul/roles/readonly policy=${POLICY}
+
+else
+    echo "###########################################################################"
+    echo "# Consul not running, skip Consul integration setup                         #"
+    echo "###########################################################################"
+fi
 
 echo "###########################################################################"
 echo "# Write test data to Vault                                                #"

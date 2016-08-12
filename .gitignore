@@ -136,4 +136,8 @@ hs_err_pid*
 /vault/index*
 /vault/serial*
 /vault/vault
+/consul/consul
+/consul/data
+/consul/config
 banner.txt
+myvault

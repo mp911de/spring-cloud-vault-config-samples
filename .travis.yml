@@ -21,7 +21,9 @@ install:
   - mkdir -p download
   - src/test/bash/create_certificates.sh
   - src/test/bash/install_vault.sh
+  - src/test/bash/install_consul.sh
   - src/test/bash/local_run_vault.sh &
+  - src/test/bash/local_run_consul.sh &
   - mysql -e "CREATE USER 'spring' IDENTIFIED by 'vault';"
   - mysql -uroot -e "GRANT ALL PRIVILEGES ON *.* TO 'spring'@'%' WITH GRANT OPTION;";
   - source src/test/bash/env.sh && src/test/bash/setup_examples.sh

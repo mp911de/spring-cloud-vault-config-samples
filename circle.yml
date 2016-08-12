@@ -10,7 +10,10 @@ dependencies:
     - mkdir -p download
     - src/test/bash/create_certificates.sh
     - src/test/bash/install_vault.sh
+    - src/test/bash/install_consul.sh
     - src/test/bash/local_run_vault.sh:
+        background: true
+    - src/test/bash/local_run_consul.sh:
         background: true
     - sleep 2
     - mysql -e "CREATE USER 'spring' IDENTIFIED by 'vault';"
