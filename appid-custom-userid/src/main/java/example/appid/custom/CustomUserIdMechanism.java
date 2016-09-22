@@ -15,7 +15,8 @@
  */
 package example.appid.custom;
 
-import org.springframework.cloud.vault.AppIdUserIdMechanism;
+
+import org.springframework.vault.authentication.AppIdUserIdMechanism;
 
 /**
  * This class creates a static UserId.
