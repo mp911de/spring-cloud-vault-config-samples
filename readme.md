@@ -9,9 +9,9 @@ Open a console in the examples root directory and execute
 the following commands to setup Vault:
 
 ```bash
-$ src/test/create_certificates.sh # Create SSL certificates
+$ src/test/bash/create_certificates.sh # Create SSL certificates
 $ src/test/bash/install_vault.sh # Download and unzip vault
-$ src/test/local_run_vault.sh &
+$ src/test/bash/local_run_vault.sh &
 ```
 
 Vault is now running in dev-mode listening on
@@ -20,7 +20,8 @@ https://localhost:8200 and http://localhost:8201.
 Vault requires some configuration before you can run the examples.
 
 ```bash
-$ src/test/setup_examples.sh &
+$ source src/test/bash/env.sh
+$ src/test/bash/setup_examples.sh &
 ```
 
 The root token is set to `00000000-0000-0000-0000-000000000000`
