@@ -13,6 +13,6 @@ mkdir -p ${BASEDIR}/consul/data
 ${CONSUL_BIN} agent -server \
             -bootstrap-expect 1 \
             -data-dir ${BASEDIR}/consul/data \
-            -config-file=${BASEDIR}/src/test/resources/consul.json
+            -config-file=${BASEDIR}/src/test/bash/consul.json
 
 exit $?

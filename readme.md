@@ -21,7 +21,7 @@ Vault requires some configuration before you can run the examples.
 
 ```bash
 $ source src/test/bash/env.sh
-$ src/test/bash/setup_examples.sh &
+$ src/test/bash/setup_examples.sh
 ```
 
 The root token is set to `00000000-0000-0000-0000-000000000000`
