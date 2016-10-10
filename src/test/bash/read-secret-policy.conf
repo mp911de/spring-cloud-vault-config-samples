@@ -1,0 +1,3 @@
+path "secret/*" {
+  policy = "read"
+}

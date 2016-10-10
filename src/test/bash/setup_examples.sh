@@ -1,17 +1,24 @@
 #!/bin/bash
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+VAULT_BIN="${DIR}/../../../vault/vault"
+
+
+echo "###########################################################################"
+echo "# Preparing policies                                                      #"
+echo "###########################################################################"
+
+${VAULT_BIN} policy-write read-secret ${DIR}/read-secret-policy.conf
+
 echo "###########################################################################"
 echo "# Setup static AppId authentication                                       #"
 echo "###########################################################################"
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-VAULT_BIN="${DIR}/../../../vault/vault"
-
 echo "vault auth-enable app-id"
 ${VAULT_BIN} auth-enable app-id
 
-echo "vault write auth/app-id/map/app-id/my-spring-boot-app value=root display_name=spring-boot-app"
-${VAULT_BIN} write auth/app-id/map/app-id/my-spring-boot-app value=root display_name=spring-boot-app
+echo "vault write auth/app-id/map/app-id/my-spring-boot-app value=default display_name=spring-boot-app"
+${VAULT_BIN} write auth/app-id/map/app-id/my-spring-boot-app value=read-secret display_name=spring-boot-app
 
 echo "vault write auth/app-id/map/user-id/my-static-userid value=my-spring-boot-app"
 ${VAULT_BIN} write auth/app-id/map/user-id/my-static-userid value=my-spring-boot-app
