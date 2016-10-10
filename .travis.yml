@@ -10,6 +10,23 @@ matrix:
     - jdk: oraclejdk7
       env:
         - PROFILE=ci
+        - VAULT_VER=0.5.2
+    - jdk: oraclejdk7
+      env:
+        - PROFILE=ci
+        - VAULT_VER=0.5.3
+    - jdk: oraclejdk7
+      env:
+        - PROFILE=ci
+        - VAULT_VER=0.6.0
+    - jdk: oraclejdk7
+      env:
+        - PROFILE=ci
+        - VAULT_VER=0.6.1
+    - jdk: oraclejdk7
+      env:
+        - PROFILE=ci
+        - VAULT_VER=0.6.2
     - jdk: oraclejdk8
       env:
         - PROFILE=ci

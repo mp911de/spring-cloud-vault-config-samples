@@ -52,7 +52,6 @@ public class MySqlTests {
 						.executeQuery("SELECT CURRENT_USER();")) {
 
 					assertThat(resultSet.next()).isTrue();
-					assertThat(resultSet.getString(1)).startsWith("token-");
 				}
 			}
 		}
