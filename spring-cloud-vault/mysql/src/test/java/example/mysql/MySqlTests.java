@@ -15,8 +15,6 @@
  */
 package example.mysql;
 
-import static org.assertj.core.api.Assertions.*;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -25,9 +23,12 @@ import javax.sql.DataSource;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Spring Cloud Vault Config can obtain credentials for MySQL datasources. Credentials are

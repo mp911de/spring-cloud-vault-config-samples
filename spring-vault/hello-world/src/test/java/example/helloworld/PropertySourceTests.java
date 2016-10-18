@@ -15,13 +15,13 @@
  */
 package example.helloworld;
 
-import static org.assertj.core.api.Assertions.*;
-
 import java.util.Collections;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
@@ -32,7 +32,7 @@ import org.springframework.vault.annotation.VaultPropertySource;
 import org.springframework.vault.core.VaultOperations;
 import org.springframework.vault.core.VaultTemplate;
 
-import lombok.extern.slf4j.Slf4j;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Tests showing {@code @VaultPropertySource} usage.

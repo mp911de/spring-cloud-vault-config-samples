@@ -15,16 +15,15 @@
  */
 package example.helloworld;
 
-import static example.helloworld.WorkDirHelper.findWorkDir;
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.io.File;
 import java.util.Collections;
 import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
@@ -47,7 +46,8 @@ import org.springframework.vault.support.SslConfiguration;
 import org.springframework.vault.support.VaultResponse;
 import org.springframework.vault.support.VaultToken;
 
-import lombok.extern.slf4j.Slf4j;
+import static example.helloworld.WorkDirHelper.findWorkDir;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Setup and use Cubbyhole authentication.
@@ -136,9 +136,8 @@ public class CubbyholeAuthenticationTests {
 		@Override
 		public SslConfiguration sslConfiguration() {
 
-			return SslConfiguration.forTrustStore(
-					new FileSystemResource(new File(findWorkDir(), "keystore.jks")),
-					"changeit");
+			return SslConfiguration.forTrustStore(new FileSystemResource(new File(
+					findWorkDir(), "keystore.jks")), "changeit");
 		}
 	}
 }

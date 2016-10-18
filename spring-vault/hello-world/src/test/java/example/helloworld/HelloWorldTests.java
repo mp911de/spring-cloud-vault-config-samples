@@ -15,18 +15,18 @@
  */
 package example.helloworld;
 
-import static org.assertj.core.api.Assertions.*;
-
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.vault.core.VaultOperations;
 import org.springframework.vault.support.VaultResponseSupport;
 
-import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Simple interaction with {@link VaultOperations}.
@@ -51,12 +51,12 @@ public class HelloWorldTests {
 		vaultOperations.write("secret/myapplication/user/3128", mySecretData);
 		log.info("Wrote data to Vault");
 
-		VaultResponseSupport<MySecretData> response = vaultOperations
-				.read("secret/myapplication/user/3128", MySecretData.class);
+		VaultResponseSupport<MySecretData> response = vaultOperations.read(
+				"secret/myapplication/user/3128", MySecretData.class);
 
 		MySecretData data = response.getData();
-		assertThat(data.getSecurityQuestion())
-				.isEqualTo(mySecretData.getSecurityQuestion());
+		assertThat(data.getSecurityQuestion()).isEqualTo(
+				mySecretData.getSecurityQuestion());
 		assertThat(data.getAnswer()).isEqualTo(mySecretData.getAnswer());
 	}
 

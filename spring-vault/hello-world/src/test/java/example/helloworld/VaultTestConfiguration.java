@@ -15,8 +15,6 @@
  */
 package example.helloworld;
 
-import static example.helloworld.WorkDirHelper.findWorkDir;
-
 import java.io.File;
 
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +24,8 @@ import org.springframework.vault.authentication.TokenAuthentication;
 import org.springframework.vault.client.VaultEndpoint;
 import org.springframework.vault.config.AbstractVaultConfiguration;
 import org.springframework.vault.support.SslConfiguration;
+
+import static example.helloworld.WorkDirHelper.findWorkDir;
 
 /**
  * Java Configuration to bootstrap Spring Vault.
@@ -46,8 +46,7 @@ class VaultTestConfiguration extends AbstractVaultConfiguration {
 	@Override
 	public SslConfiguration sslConfiguration() {
 
-		return SslConfiguration.forTrustStore(
-				new FileSystemResource(new File(findWorkDir(), "keystore.jks")),
-				"changeit");
+		return SslConfiguration.forTrustStore(new FileSystemResource(new File(
+				findWorkDir(), "keystore.jks")), "changeit");
 	}
 }
