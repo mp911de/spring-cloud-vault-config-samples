@@ -26,7 +26,7 @@
 
 	<properties>
 		<java.version>1.7</java.version>
-		<spring-cloud-vault.version>1.0.0.BUILD-SNAPSHOT</spring-cloud-vault.version>
+		<spring-cloud-vault.version>1.0.0.M1</spring-cloud-vault.version>
 	</properties>
 
 	<dependencyManagement>
@@ -89,6 +89,10 @@
 		<repository>
 			<id>spring-libs-snapshot</id>
 			<url>https://repo.spring.io/libs-snapshot</url>
+		</repository>
+		<repository>
+			<id>spring-libs-milestone</id>
+			<url>https://repo.spring.io/libs-milestone</url>
 		</repository>
 	</repositories>
 
