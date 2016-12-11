@@ -27,6 +27,10 @@ matrix:
       env:
         - PROFILE=ci
         - VAULT_VER=0.6.2
+    - jdk: oraclejdk7
+      env:
+        - PROFILE=ci
+        - VAULT_VER=0.6.3
     - jdk: oraclejdk8
       env:
         - PROFILE=ci
@@ -52,6 +56,7 @@ script: mvn clean verify -P${PROFILE}
 
 after_script:
   - pkill vault
+  - pkill consul
 
 cache:
   directories:
