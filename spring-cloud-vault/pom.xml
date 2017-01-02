@@ -22,6 +22,7 @@
 		<module>appid-custom-userid</module>
 		<module>mysql</module>
 		<module>consul</module>
+		<module>pki</module>
 	</modules>
 
 	<properties>

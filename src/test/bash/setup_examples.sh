@@ -77,6 +77,19 @@ else
 fi
 
 echo "###########################################################################"
+echo "# Setup static PKI example                                                #"
+echo "###########################################################################"
+
+echo "vault mount pki"
+${VAULT_BIN} mount pki
+
+echo "write pki/config/ca pem_bundle=-"
+cat work/ca/certs/intermediate.cert.pem work/ca/private/intermediate.decrypted.key.pem | ${VAULT_BIN} write pki/config/ca pem_bundle=-
+
+echo "vault write pki/roles/localhost-ssl-demo allowed_domains=localhost,example.com allow_localhost=true max_ttl=72h"
+${VAULT_BIN} write pki/roles/localhost-ssl-demo allowed_domains=localhost,example.com allow_localhost=true max_ttl=72h
+
+echo "###########################################################################"
 echo "# Write test data to Vault                                                #"
 echo "###########################################################################"
 
