@@ -29,10 +29,9 @@ import org.springframework.vault.client.VaultEndpoint;
 import org.springframework.vault.config.AbstractVaultConfiguration;
 import org.springframework.vault.core.VaultTemplate;
 import org.springframework.vault.support.SslConfiguration;
-import org.springframework.vault.support.VaultResponse;
 import org.springframework.vault.support.VaultResponseSupport;
 
-import static example.helloworld.WorkDirHelper.findWorkDir;
+import static example.util.WorkDirHelper.*;
 
 /**
  * Sample Application using Spring Vault with Token authentication.
@@ -55,7 +54,7 @@ public class HelloWorldApplication {
 		mySecretData.setUsername("walter");
 		mySecretData.setPassword("white");
 
-		VaultResponse writeResponse = vaultTemplate.write(
+		vaultTemplate.write(
 				"secret/myapplication/user/3128", mySecretData);
 		log.info("Wrote data to Vault");
 
@@ -83,7 +82,7 @@ public class HelloWorldApplication {
 		@Override
 		public SslConfiguration sslConfiguration() {
 
-			return SslConfiguration.forKeyStore(new FileSystemResource(new File(
+			return SslConfiguration.forTrustStore(new FileSystemResource(new File(
 					findWorkDir(), "keystore.jks")), "changeit");
 		}
 	}

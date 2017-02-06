@@ -25,13 +25,13 @@ import org.springframework.vault.client.VaultEndpoint;
 import org.springframework.vault.config.AbstractVaultConfiguration;
 import org.springframework.vault.support.SslConfiguration;
 
-import static example.helloworld.WorkDirHelper.findWorkDir;
+import static example.util.WorkDirHelper.*;
 
 /**
  * Java Configuration to bootstrap Spring Vault.
  */
 @Configuration
-class VaultTestConfiguration extends AbstractVaultConfiguration {
+public class VaultTestConfiguration extends AbstractVaultConfiguration {
 
 	@Override
 	public VaultEndpoint vaultEndpoint() {

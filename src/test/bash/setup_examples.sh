@@ -99,3 +99,17 @@ ${VAULT_BIN} write secret/my-spring-boot-app mykey=myvalue
 echo "vault write secret/my-spring-boot-app/cloud key_for_cloud_profile=value"
 ${VAULT_BIN} write secret/my-spring-boot-app/cloud key_for_cloud_profile=value
 
+echo "vault write secret/my-spring-app database.username=myuser database.password=mypassword"
+${VAULT_BIN} write secret/my-spring-app database.username=myuser database.password=mypassword
+
+echo "###########################################################################"
+echo "# Setup Transit Backend                                                   #"
+echo "###########################################################################"
+
+echo "vault mount transit"
+${VAULT_BIN} mount transit
+
+echo "vault write -f transit/keys/foo-key"
+${VAULT_BIN} write -f transit/keys/foo-key
+
+

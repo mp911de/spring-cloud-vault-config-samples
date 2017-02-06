@@ -7,6 +7,7 @@
 	</appender>
 
 	<logger name="org.springframework.test" level="ERROR" />
+	<logger name="org.springframework.context.support" level="WARN" />
 
 	<root level="INFO">
 		<appender-ref ref="STDOUT"/>

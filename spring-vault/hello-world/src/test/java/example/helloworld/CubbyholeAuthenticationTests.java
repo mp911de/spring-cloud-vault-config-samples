@@ -46,7 +46,7 @@ import org.springframework.vault.support.SslConfiguration;
 import org.springframework.vault.support.VaultResponse;
 import org.springframework.vault.support.VaultToken;
 
-import static example.helloworld.WorkDirHelper.findWorkDir;
+import static example.util.WorkDirHelper.findWorkDir;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
