@@ -141,3 +141,4 @@ hs_err_pid*
 /consul/config
 banner.txt
 myvault
+/plain/
