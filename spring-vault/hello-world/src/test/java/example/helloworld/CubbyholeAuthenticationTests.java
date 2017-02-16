@@ -30,7 +30,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.vault.annotation.VaultPropertySource;
@@ -38,16 +37,16 @@ import org.springframework.vault.authentication.ClientAuthentication;
 import org.springframework.vault.authentication.CubbyholeAuthentication;
 import org.springframework.vault.authentication.CubbyholeAuthenticationOptions;
 import org.springframework.vault.client.VaultEndpoint;
-import org.springframework.vault.client.VaultResponseEntity;
 import org.springframework.vault.config.AbstractVaultConfiguration;
+import org.springframework.vault.core.RestOperationsCallback;
 import org.springframework.vault.core.VaultOperations;
-import org.springframework.vault.core.VaultOperations.SessionCallback;
 import org.springframework.vault.support.SslConfiguration;
 import org.springframework.vault.support.VaultResponse;
 import org.springframework.vault.support.VaultToken;
+import org.springframework.web.client.RestOperations;
 
-import static example.util.WorkDirHelper.findWorkDir;
-import static org.assertj.core.api.Assertions.assertThat;
+import static example.util.WorkDirHelper.*;
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * Setup and use Cubbyhole authentication.
@@ -77,23 +76,23 @@ public class CubbyholeAuthenticationTests {
 		vaultOperations.write("secret/myapp/configuration",
 				Collections.singletonMap("configuration.key", "value"));
 
-		VaultResponseEntity<VaultResponse> response = vaultOperations
-				.doWithVault(new SessionCallback<VaultResponseEntity<VaultResponse>>() {
+		VaultResponse response = vaultOperations
+				.doWithSession(new RestOperationsCallback<VaultResponse>() {
+
 					@Override
-					public VaultResponseEntity<VaultResponse> doWithVault(
-							VaultOperations.VaultSession session) {
+					public VaultResponse doWithRestOperations(
+							RestOperations restOperations) {
 
 						HttpHeaders headers = new HttpHeaders();
 						headers.add("X-Vault-Wrap-TTL", "10m");
 
-						return session.exchange("auth/token/create", HttpMethod.POST,
-								new HttpEntity<Object>(headers), VaultResponse.class,
-								null);
+						return restOperations.postForObject("auth/token/create",
+								new HttpEntity<Object>(headers), VaultResponse.class);
 					}
 				});
 
 		// Response Wrapping requires Vault 0.6.0+
-		Map<String, String> wrapInfo = response.getBody().getWrapInfo();
+		Map<String, String> wrapInfo = response.getWrapInfo();
 		initialToken = VaultToken.of(wrapInfo.get("token"));
 	}
 
@@ -130,7 +129,7 @@ public class CubbyholeAuthenticationTests {
 					.initialToken(initialToken) //
 					.build();
 
-			return new CubbyholeAuthentication(options, vaultClient());
+			return new CubbyholeAuthentication(options, restOperations());
 		}
 
 		@Override
