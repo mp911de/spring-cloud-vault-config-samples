@@ -11,7 +11,7 @@ addons:
       - debian-sid
     packages:
       - libssl1.0.0
-      
+
 matrix:
   include:
     - jdk: oraclejdk7
@@ -26,22 +26,6 @@ matrix:
       env:
         - PROFILE=ci
         - VAULT_VER=0.6.0
-    - jdk: oraclejdk7
-      env:
-        - PROFILE=ci
-        - VAULT_VER=0.6.1
-    - jdk: oraclejdk7
-      env:
-        - PROFILE=ci
-        - VAULT_VER=0.6.2
-    - jdk: oraclejdk7
-      env:
-        - PROFILE=ci
-        - VAULT_VER=0.6.3
-    - jdk: oraclejdk7
-      env:
-        - PROFILE=ci
-        - VAULT_VER=0.6.4
     - jdk: oraclejdk7
       env:
         - PROFILE=ci
