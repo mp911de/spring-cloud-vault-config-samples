@@ -1,0 +1,21 @@
+{
+  "limits": {
+	"fds": 16384,
+	"mem": 1024,
+	"disk": 1024
+  },
+  "application_name": "hello-world",
+  "application_uris": [
+	"hello-world.io"
+  ],
+  "name": "hello-world-blue",
+  "space_name": "production",
+  "space_id": "d007583f-5617-4b02-a5a7-550648827cfa",
+  "uris": [
+	"hello-world.io"
+  ],
+  "users": null,
+  "application_id": "20fffe9d-d8d1-4825-9977-1426840a13db",
+  "version": "81c725d8-d5ce-41af-81a1-8c2c14be296f",
+  "application_version": "81c725d8-d5ce-41af-81a1-8c2c14be296f"
+}

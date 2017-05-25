@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
@@ -10,10 +11,12 @@
 		<relativePath>..</relativePath>
 	</parent>
 
-	<artifactId>spring-vault-example</artifactId>
+	<artifactId>spring-vault-cloudfoundry-example</artifactId>
 
-	<name>Spring Vault Hello World</name>
-	<description>Demo project using Spring Vault performing basic operations</description>
+	<name>Spring Vault on CloudFoundry</name>
+	<description>Demo project using Spring Vault on CloudFoundry requiring HashiCorp Vault
+		service broker
+	</description>
 
 	<dependencies>
 
@@ -38,6 +41,29 @@
 			<artifactId>spring-context</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+
+		<!-- Required -->
+
+		<dependency>
+			<groupId>io.pivotal.spring.cloud</groupId>
+			<artifactId>spring-cloud-vault-spring-connector</artifactId>
+			<version>1.0.0.BUILD-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.pivotal.spring.cloud</groupId>
+			<artifactId>spring-cloud-vault-cloudfoundry-connector</artifactId>
+			<version>1.0.0.BUILD-SNAPSHOT</version>
+		</dependency>
+
+		<!-- Required only for local testing -->
+
+		<dependency>
+			<groupId>io.pivotal.spring.cloud</groupId>
+			<artifactId>spring-cloud-vault-localconfig-connector</artifactId>
+			<version>1.0.0.BUILD-SNAPSHOT</version>
+		</dependency>
+
 
 	</dependencies>
 

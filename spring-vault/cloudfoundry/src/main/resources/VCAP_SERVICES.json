@@ -1,0 +1,29 @@
+{
+  "hashicorp-vault": [
+	{
+	  "credentials": {
+		"address": "https://localhost:8200/",
+		"auth": {
+		  "token": "00000000-0000-0000-0000-000000000000"
+		},
+		"backends": {
+		  "generic": "cf/20fffe9d-d8d1-4825-9977-1426840a13db/secret",
+		  "transit": "cf/20fffe9d-d8d1-4825-9977-1426840a13db/transit"
+		},
+		"backends_shared": {
+		  "organization": "cf/1a558498-59ad-488c-b395-8b983aacb7da/secret",
+		  "space": "cf/d007583f-5617-4b02-a5a7-550648827cfa/secret"
+		}
+	  },
+	  "syslog_drain_url": null,
+	  "volume_mounts": [],
+	  "label": "hashicorp-vault",
+	  "provider": null,
+	  "plan": "shared",
+	  "name": "foo",
+	  "tags": [
+		""
+	  ]
+	}
+  ]
+}

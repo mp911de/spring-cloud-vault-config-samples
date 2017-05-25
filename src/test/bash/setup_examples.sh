@@ -114,6 +114,33 @@ ${VAULT_BIN} write -f transit/keys/foo-key
 
 
 echo "###########################################################################"
+echo "# Setup CloudFoundry example                                              #"
+echo "###########################################################################"
+
+echo "vault mount -path=cf/20fffe9d-d8d1-4825-9977-1426840a13db/transit transit"
+${VAULT_BIN} mount -path=cf/20fffe9d-d8d1-4825-9977-1426840a13db/transit transit
+
+echo "vault mount -path=cf/20fffe9d-d8d1-4825-9977-1426840a13db/secret generic"
+${VAULT_BIN} mount -path=cf/20fffe9d-d8d1-4825-9977-1426840a13db/secret generic
+
+echo "vault write cf/20fffe9d-d8d1-4825-9977-1426840a13db/secret/application app-key=hello-world-app index=1"
+${VAULT_BIN} write cf/20fffe9d-d8d1-4825-9977-1426840a13db/secret/application app-key=hello-world-app index=1
+
+# Space
+echo "vault mount -path=cf/d007583f-5617-4b02-a5a7-550648827cfa/secret generic"
+${VAULT_BIN} mount -path=cf/d007583f-5617-4b02-a5a7-550648827cfa/secret generic
+
+echo "vault write cf/d007583f-5617-4b02-a5a7-550648827cfa/secret/my-cf-app space-key=hello-world-space index=2"
+${VAULT_BIN} write cf/d007583f-5617-4b02-a5a7-550648827cfa/secret/my-cf-app space-key=hello-world-space index=2
+
+# Org
+echo "vault mount -path=cf/1a558498-59ad-488c-b395-8b983aacb7da/secret generic"
+${VAULT_BIN} mount -path=cf/1a558498-59ad-488c-b395-8b983aacb7da/secret generic
+
+echo "vault write cf/1a558498-59ad-488c-b395-8b983aacb7da/secret/my-cf-app org-key=hello-world-org index=3"
+${VAULT_BIN} write cf/1a558498-59ad-488c-b395-8b983aacb7da/secret/my-cf-app org-key=hello-world-org index=3
+
+echo "###########################################################################"
 echo "# Setup TOTP Backend                                                      #"
 echo "###########################################################################"
 
