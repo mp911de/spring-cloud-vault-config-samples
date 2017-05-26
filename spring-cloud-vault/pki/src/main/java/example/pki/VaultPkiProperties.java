@@ -22,6 +22,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.vault.config.VaultSecretBackendDescriptor;
+import org.springframework.validation.annotation.Validated;
 
 /**
  * Configuration properties for Vault using the PKI integration.
@@ -30,6 +31,7 @@ import org.springframework.cloud.vault.config.VaultSecretBackendDescriptor;
  */
 @ConfigurationProperties("pki")
 @Data
+@Validated
 public class VaultPkiProperties implements VaultSecretBackendDescriptor {
 
 	/**
