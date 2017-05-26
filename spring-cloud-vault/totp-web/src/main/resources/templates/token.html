@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8"/>
+	<title>Vault TOTP Demo</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<!-- Bootstrap -->
+	<link href="/webjars/bootstrap/4.0.0-alpha.6-1/css/bootstrap.css" rel="stylesheet"
+		  media="screen"/>
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="/webjars/jquery/1.11.1/jquery.js"></script>
+	<script src="/webjars/tether/1.4.0/js/tether.min.js"></script>
+	<script src="/webjars/bootstrap/4.0.0-alpha.6-1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+	<header>
+		<h1>Vault TOTP Demo
+			<small><a href="/">Start over</a></small>
+		</h1>
+	</header>
+	<section>
+		<div id="warning" class="alert alert-warning">
+			<p>This is only <strong>demo site</strong>. It is never safe to transfer TOTP
+				secret via <strong>unsecured protocol</strong> or store it in an <strong>unsecured
+					cookie</strong>!</p>
+
+		</div>
+		<script id="verification-failed" type="text/x-custom-template">
+			<div
+					class="alert alert-warning alert-dismissible fade show"
+					role="alert">
+				<button type="button" class="close" data-dismiss="alert"
+						aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<strong>Verification failed.</strong> Enter a new code and verify it
+				again.
+			</div>
+		</script>
+		<script id="verification-successful" type="text/x-custom-template">
+			<div
+					class="alert alert-success alert-dismissible fade show"
+					role="alert">
+				<button type="button" class="close" data-dismiss="alert"
+						aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<strong>TOTP code confirmed.</strong>
+			</div>
+		</script>
+		<div id="wrapper"></div>
+		<div class="row">
+			<div class="col-md-4 col-lg-4">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h2>Scan QR</h2>
+					</div>
+					<div class="panel-body">
+						<img th:src="'data:image/png;base64,' + ${barcode}"
+							 alt="Scan QR"/>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4 col-lg-4">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h2>Verify TOTP</h2>
+					</div>
+					<div class="panel-body">
+						<form method="post" action="/totp/verify" id="verify">
+							<div class="form-group">
+								<label>Code</label>
+								<input id="code" name="code" maxlength="6"
+									   class="form-control"/>
+							</div>
+							<p>
+								<button type="submit" id="verify-buton"
+										class="btn btn-success">Verify!
+								</button>
+							</p>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+
+<script type="text/javascript" th:inline="javascript">
+	/*<![CDATA[*/
+	var username = /*[[${username}]]*/ 'username';
+	/*]]>*/
+</script>
+<script>
+
+
+	$("#verify-buton").click(function (e) {
+		e.preventDefault();
+
+		var body = JSON.stringify({'username': username, 'code': $("#code").val()});
+		$.ajax({
+			url: '/totp/verify',
+			type: 'post',
+			dataType: 'json',
+			contentType: 'application/json',
+			data: body,
+
+			success: function (data) {
+
+				var template = $('#verification-failed').html();
+
+				if (data) {
+					template = $('#verification-successful').html();
+				}
+
+				$("section #warning").after(template);
+			},
+			error: function (xhr, err) {
+				alert("Unexpected error!");
+			}
+		})
+	});
+</script>
+</body>
+</html>

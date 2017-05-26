@@ -113,3 +113,9 @@ echo "vault write -f transit/keys/foo-key"
 ${VAULT_BIN} write -f transit/keys/foo-key
 
 
+echo "###########################################################################"
+echo "# Setup TOTP Backend                                                      #"
+echo "###########################################################################"
+
+echo "vault mount totp"
+${VAULT_BIN} mount totp || true

@@ -23,6 +23,7 @@
 		<module>mysql</module>
 		<module>consul</module>
 		<module>pki</module>
+		<module>totp-web</module>
 	</modules>
 
 	<properties>
