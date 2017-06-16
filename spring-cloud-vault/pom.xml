@@ -22,6 +22,7 @@
 		<module>appid-custom-userid</module>
 		<module>cloudfoundry</module>
 		<module>consul</module>
+		<module>customize</module>
 		<module>mysql</module>
 		<module>pki</module>
 		<module>totp-web</module>
