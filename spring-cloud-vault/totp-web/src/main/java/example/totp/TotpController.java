@@ -22,6 +22,7 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -42,6 +43,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class TotpController {
 
 	final VaultOperations vaultOperations;
@@ -59,11 +61,12 @@ public class TotpController {
 		String keyId = createKeyId(username);
 
 		VaultResponse response = vaultOperations
-				.write(String.format("totp/code/%s", keyId), request);
+				.write(String.format("totp/keys/%s", keyId), request);
 
 		model.addAttribute("username", username);
 		model.addAttribute("barcode", response.getData().get("barcode"));
 
+		log.info("Created key {}", keyId);
 		return "token";
 	}
 
