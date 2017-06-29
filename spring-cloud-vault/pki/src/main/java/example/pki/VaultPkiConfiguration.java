@@ -25,11 +25,11 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
-import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
-import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
-import org.springframework.boot.context.embedded.Ssl;
-import org.springframework.boot.context.embedded.SslStoreProvider;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.server.Ssl;
+import org.springframework.boot.web.server.SslStoreProvider;
+import org.springframework.boot.web.server.WebServerFactoryCustomizer;
+import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
 import org.springframework.cloud.vault.config.VaultProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,7 +40,7 @@ import org.springframework.vault.support.CertificateBundle;
  * {@link Configuration} to request SSL certificates and register a
  * {@link org.springframework.beans.factory.config.BeanPostProcessor} to configure SSL
  * certificates in the
- * {@link org.springframework.boot.context.embedded.EmbeddedServletContainer}
+ * {@link org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory}
  *
  * @author Mark Paluch
  */
@@ -70,8 +70,8 @@ public class VaultPkiConfiguration {
 
 		Lock lock = synchronizationProvider.getLock();
 
-		CertificateBundle certificateBundle = CertificateUtil.findValidCertificate(
-				vaultProperties, vaultOperations, pkiProperties);
+		CertificateBundle certificateBundle = CertificateUtil
+				.findValidCertificate(vaultProperties, vaultOperations, pkiProperties);
 
 		if (certificateBundle != null) {
 			return createCustomizer(serverProperties, certificateBundle);
@@ -133,11 +133,11 @@ public class VaultPkiConfiguration {
 	}
 
 	/**
-	 * {@link EmbeddedServletContainerCustomizer} to configure SSL certificate use from
+	 * {@link WebServerFactoryCustomizer} to configure SSL certificate use from
 	 * {@link CertificateBundle}.
 	 */
-	private static class SslCertificateEmbeddedServletContainerCustomizer implements
-			EmbeddedServletContainerCustomizer {
+	private static class SslCertificateEmbeddedServletContainerCustomizer
+			implements WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> {
 
 		private final CertificateBundle certificateBundle;
 
@@ -147,13 +147,13 @@ public class VaultPkiConfiguration {
 		}
 
 		@Override
-		public void customize(ConfigurableEmbeddedServletContainer container) {
+		public void customize(ConfigurableServletWebServerFactory container) {
 
 			try {
 
 				final KeyStore keyStore = certificateBundle.createKeyStore("vault");
-				final KeyStore trustStore = KeyStore.getInstance(KeyStore
-						.getDefaultType());
+				final KeyStore trustStore = KeyStore
+						.getInstance(KeyStore.getDefaultType());
 
 				trustStore.load(null, null);
 				trustStore.setCertificateEntry("ca",
