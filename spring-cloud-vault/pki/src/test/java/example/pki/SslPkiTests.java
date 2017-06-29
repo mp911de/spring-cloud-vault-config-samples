@@ -21,8 +21,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ContextConfiguration;
@@ -63,8 +63,8 @@ public class SslPkiTests {
 		RestTemplate restTemplate = new RestTemplate(
 				configuredWrapper.getClientHttpRequestFactory());
 
-		ResponseEntity<String> response = restTemplate.getForEntity("https://localhost:"
-				+ port, String.class);
+		ResponseEntity<String> response = restTemplate
+				.getForEntity("https://localhost:" + port, String.class);
 
 		assertThat(response.getStatusCodeValue()).isEqualTo(200);
 		assertThat(response.getBody()).isEqualTo("Hello, World");
