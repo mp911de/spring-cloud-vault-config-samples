@@ -93,8 +93,8 @@ echo "##########################################################################
 echo "# Write test data to Vault                                                #"
 echo "###########################################################################"
 
-echo "vault write secret/my-spring-boot-app mykey=myvalue"
-${VAULT_BIN} write secret/my-spring-boot-app mykey=myvalue
+echo "vault write secret/my-spring-boot-app mykey=myvalue hello.world='Hello, World'"
+${VAULT_BIN} write secret/my-spring-boot-app mykey=myvalue hello.world='Hello, World'
 
 echo "vault write secret/my-spring-boot-app/cloud key_for_cloud_profile=value"
 ${VAULT_BIN} write secret/my-spring-boot-app/cloud key_for_cloud_profile=value

@@ -36,10 +36,14 @@ public class HelloWorldApplication {
 	@Value("${mykey}")
 	String mykey;
 
+	@Value("${hello.world}")
+	String helloWorld;
+
 	@PostConstruct
 	private void postConstruct() {
 		System.out.println("##########################");
 		System.out.println(mykey);
+		System.out.println(helloWorld);
 		System.out.println("##########################");
 	}
 }
