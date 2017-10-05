@@ -39,6 +39,9 @@ matrix:
         - PROFILE=ci
     - jdk: oraclejdk8
       env:
+        - PROFILE=spring5
+    - jdk: oraclejdk8
+      env:
         - PROFILE=spring5-next
 
 before_install:
