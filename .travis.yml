@@ -1,5 +1,7 @@
 language: java
 
+jdk: oraclejdk8
+
 services:
   - mysql
 
@@ -14,14 +16,24 @@ addons:
 
 matrix:
   include:
-    - jdk: oraclejdk8
-      env:
+    - env:
         - PROFILE=ci
-    - jdk: oraclejdk8
-      env:
-        - PROFILE=spring5
-    - jdk: oraclejdk8
-      env:
+        - VAULT_VER=0.5.2
+    - env:
+        - PROFILE=ci
+        - VAULT_VER=0.5.3
+    - env:
+        - PROFILE=ci
+        - VAULT_VER=0.6.0
+    - env:
+        - PROFILE=ci
+        - VAULT_VER=0.6.5
+    - env:
+        - PROFILE=ci
+        - VAULT_VER=0.7.3
+    - env:
+        - PROFILE=ci
+    - env:
         - PROFILE=spring5-next
 
 before_install:
