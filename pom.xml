@@ -34,7 +34,7 @@
 		<profile>
 			<id>spring5-next</id>
 			<properties>
-				<spring.version>5.0.0.BUILD-SNAPSHOT</spring.version>
+				<spring.version>5.0.1.BUILD-SNAPSHOT</spring.version>
 			</properties>
 		</profile>
 	</profiles>
