@@ -92,6 +92,10 @@
 				<version>2.19.1</version>
 				<configuration>
 					<redirectTestOutputToFile>true</redirectTestOutputToFile>
+					<includes>
+						<include>**/*Tests.java</include>
+					</includes>
+
 				</configuration>
 			</plugin>
 		</plugins>
