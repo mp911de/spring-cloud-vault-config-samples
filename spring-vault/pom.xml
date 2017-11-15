@@ -16,9 +16,9 @@
 	</modules>
 
 	<properties>
-		<java.version>1.6</java.version>
-		<spring-vault.version>2.0.0.M1</spring-vault.version>
-		<spring.version>5.0.0.RC3</spring.version>
+		<java.version>1.8</java.version>
+		<spring-vault.version>2.0.0.RC1</spring-vault.version>
+		<spring.version>5.0.1.RELEASE</spring.version>
 	</properties>
 
 	<dependencyManagement>
