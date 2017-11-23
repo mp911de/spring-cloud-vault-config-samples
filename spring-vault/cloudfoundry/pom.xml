@@ -18,6 +18,10 @@
 		service broker
 	</description>
 
+	<properties>
+		<spring-cloud-vault-spring-connector.version>2.0.0.M1</spring-cloud-vault-spring-connector.version>
+	</properties>
+
 	<dependencies>
 
 		<dependency>
@@ -47,13 +51,13 @@
 		<dependency>
 			<groupId>io.pivotal.spring.cloud</groupId>
 			<artifactId>spring-cloud-vault-spring-connector</artifactId>
-			<version>1.0.0.BUILD-SNAPSHOT</version>
+			<version>${spring-cloud-vault-spring-connector.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>io.pivotal.spring.cloud</groupId>
 			<artifactId>spring-cloud-vault-cloudfoundry-connector</artifactId>
-			<version>1.0.0.BUILD-SNAPSHOT</version>
+			<version>${spring-cloud-vault-spring-connector.version}</version>
 		</dependency>
 
 		<!-- Required only for local testing -->
@@ -61,9 +65,8 @@
 		<dependency>
 			<groupId>io.pivotal.spring.cloud</groupId>
 			<artifactId>spring-cloud-vault-localconfig-connector</artifactId>
-			<version>1.0.0.BUILD-SNAPSHOT</version>
+			<version>${spring-cloud-vault-spring-connector.version}</version>
 		</dependency>
-
 
 	</dependencies>
 
