@@ -20,11 +20,12 @@
 		<module>hello-world</module>
 		<module>appid</module>
 		<module>appid-custom-userid</module>
-		<module>cloudfoundry</module>
+		<!-- <module>cloudfoundry</module> -->
 		<module>consul</module>
 		<module>customize</module>
 		<module>mysql</module>
 		<module>pki</module>
+		<module>repositories</module>
 		<module>totp-web</module>
 	</modules>
 
