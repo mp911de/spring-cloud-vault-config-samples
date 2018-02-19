@@ -32,13 +32,6 @@
 		</profile>
 
 		<profile>
-			<id>spring5</id>
-			<properties>
-				<spring.version>5.0.0.RELEASE</spring.version>
-			</properties>
-		</profile>
-		
-		<profile>
 			<id>spring5-next</id>
 			<properties>
 				<spring.version>5.0.5.BUILD-SNAPSHOT</spring.version>
