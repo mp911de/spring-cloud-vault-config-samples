@@ -12,7 +12,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.0.0.RC2</version>
+		<version>2.0.0.RELEASE</version>
 		<relativePath /> <!-- lookup from repository -->
 	</parent>
 
@@ -130,7 +130,7 @@
 		<profile>
 			<id>spring5-next</id>
 			<properties>
-				<spring.version>5.0.5.BUILD-SNAPSHOT</spring.version>
+				<spring.version>5.0.6.BUILD-SNAPSHOT</spring.version>
 			</properties>
 		</profile>
 	</profiles>
