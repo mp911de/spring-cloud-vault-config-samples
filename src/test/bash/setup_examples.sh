@@ -8,14 +8,21 @@ echo "##########################################################################
 echo "# Preparing policies                                                      #"
 echo "###########################################################################"
 
-${VAULT_BIN} policy-write read-secret ${DIR}/read-secret-policy.conf
+${VAULT_BIN} policy write read-secret ${DIR}/read-secret-policy.conf
+
+echo "###########################################################################"
+echo "# Restoring non-versioned K/V backend at secret/                          #"
+echo "###########################################################################"
+
+${VAULT_BIN} secrets disable secret
+${VAULT_BIN} secrets enable -path secret -version 1 kv
 
 echo "###########################################################################"
 echo "# Setup static AppId authentication                                       #"
 echo "###########################################################################"
 
-echo "vault auth-enable app-id"
-${VAULT_BIN} auth-enable app-id
+echo "vault auth enable app-id"
+${VAULT_BIN} auth enable app-id
 
 echo "vault write auth/app-id/map/app-id/my-spring-boot-app value=default display_name=spring-boot-app"
 ${VAULT_BIN} write auth/app-id/map/app-id/my-spring-boot-app value=read-secret display_name=spring-boot-app
@@ -31,8 +38,8 @@ if [[ $? == 0 ]] ; then
     echo "# Setup MySQL integration                                                 #"
     echo "###########################################################################"
 
-    echo "vault mount mysql"
-    ${VAULT_BIN} mount mysql
+    echo "vault secrets enable mysql"
+    ${VAULT_BIN} secrets enable mysql
 
     echo 'vault write mysql/config/connection connection_url="spring:vault@tcp(localhost:3306)/"'
     ${VAULT_BIN} write mysql/config/connection connection_url="spring:vault@tcp(localhost:3306)/"
@@ -53,8 +60,8 @@ if [[ $? == 0 ]] ; then
     echo "# Setup Consul integration                                                 #"
     echo "###########################################################################"
 
-    echo "vault mount consul"
-    ${VAULT_BIN} mount consul
+    echo "vault secrets enable consul"
+    ${VAULT_BIN} secrets enable consul
 
     TOKEN_JSON=$(curl -d "{\"Name\": \"sample\", \"Type\": \"management\"}" \
             -H "X-Consul-Token: consul-master-token" \
@@ -80,8 +87,8 @@ echo "##########################################################################
 echo "# Setup static PKI example                                                #"
 echo "###########################################################################"
 
-echo "vault mount pki"
-${VAULT_BIN} mount pki
+echo "vault secrets enable pki"
+${VAULT_BIN} secrets enable pki
 
 echo "write pki/config/ca pem_bundle=-"
 cat work/ca/certs/intermediate.cert.pem work/ca/private/intermediate.decrypted.key.pem | ${VAULT_BIN} write pki/config/ca pem_bundle=-
@@ -93,21 +100,21 @@ echo "##########################################################################
 echo "# Write test data to Vault                                                #"
 echo "###########################################################################"
 
-echo "vault write secret/my-spring-boot-app mykey=myvalue hello.world='Hello, World'"
-${VAULT_BIN} write secret/my-spring-boot-app mykey=myvalue hello.world='Hello, World'
+echo "vault kv put secret/my-spring-boot-app mykey=myvalue hello.world='Hello, World'"
+${VAULT_BIN} kv put secret/my-spring-boot-app mykey=myvalue hello.world='Hello, World'
 
-echo "vault write secret/my-spring-boot-app/cloud key_for_cloud_profile=value"
-${VAULT_BIN} write secret/my-spring-boot-app/cloud key_for_cloud_profile=value
+echo "vault kv put secret/my-spring-boot-app/cloud key_for_cloud_profile=value"
+${VAULT_BIN} kv put secret/my-spring-boot-app/cloud key_for_cloud_profile=value
 
-echo "vault write secret/my-spring-app database.username=myuser database.password=mypassword"
-${VAULT_BIN} write secret/my-spring-app database.username=myuser database.password=mypassword
+echo "vault kv put secret/my-spring-app database.username=myuser database.password=mypassword"
+${VAULT_BIN} kv put secret/my-spring-app database.username=myuser database.password=mypassword
 
 echo "###########################################################################"
 echo "# Setup Transit Backend                                                   #"
 echo "###########################################################################"
 
-echo "vault mount transit"
-${VAULT_BIN} mount transit
+echo "vault secrets enable transit"
+${VAULT_BIN} secrets enable transit
 
 echo "vault write -f transit/keys/foo-key"
 ${VAULT_BIN} write -f transit/keys/foo-key
@@ -117,25 +124,25 @@ echo "##########################################################################
 echo "# Setup CloudFoundry example                                              #"
 echo "###########################################################################"
 
-echo "vault mount -path=cf/20fffe9d-d8d1-4825-9977-1426840a13db/transit transit"
-${VAULT_BIN} mount -path=cf/20fffe9d-d8d1-4825-9977-1426840a13db/transit transit
+echo "vault secrets enable -path=cf/20fffe9d-d8d1-4825-9977-1426840a13db/transit transit"
+${VAULT_BIN} secrets enable -path=cf/20fffe9d-d8d1-4825-9977-1426840a13db/transit transit
 
-echo "vault mount -path=cf/20fffe9d-d8d1-4825-9977-1426840a13db/secret generic"
-${VAULT_BIN} mount -path=cf/20fffe9d-d8d1-4825-9977-1426840a13db/secret generic
+echo "vault secrets enable -path=cf/20fffe9d-d8d1-4825-9977-1426840a13db/secret kv"
+${VAULT_BIN} secrets enable -path=cf/20fffe9d-d8d1-4825-9977-1426840a13db/secret kv
 
 echo "vault write cf/20fffe9d-d8d1-4825-9977-1426840a13db/secret/application app-key=hello-world-app index=1"
 ${VAULT_BIN} write cf/20fffe9d-d8d1-4825-9977-1426840a13db/secret/application app-key=hello-world-app index=1
 
 # Space
-echo "vault mount -path=cf/d007583f-5617-4b02-a5a7-550648827cfa/secret generic"
-${VAULT_BIN} mount -path=cf/d007583f-5617-4b02-a5a7-550648827cfa/secret generic
+echo "vault secrets enable -path=cf/d007583f-5617-4b02-a5a7-550648827cfa/secret kv"
+${VAULT_BIN} secrets enable -path=cf/d007583f-5617-4b02-a5a7-550648827cfa/secret kv
 
 echo "vault write cf/d007583f-5617-4b02-a5a7-550648827cfa/secret/my-cf-app space-key=hello-world-space index=2"
 ${VAULT_BIN} write cf/d007583f-5617-4b02-a5a7-550648827cfa/secret/my-cf-app space-key=hello-world-space index=2
 
 # Org
-echo "vault mount -path=cf/1a558498-59ad-488c-b395-8b983aacb7da/secret generic"
-${VAULT_BIN} mount -path=cf/1a558498-59ad-488c-b395-8b983aacb7da/secret generic
+echo "vault secrets enable -path=cf/1a558498-59ad-488c-b395-8b983aacb7da/secret kv"
+${VAULT_BIN} secrets enable -path=cf/1a558498-59ad-488c-b395-8b983aacb7da/secret kv
 
 echo "vault write cf/1a558498-59ad-488c-b395-8b983aacb7da/secret/my-cf-app org-key=hello-world-org index=3"
 ${VAULT_BIN} write cf/1a558498-59ad-488c-b395-8b983aacb7da/secret/my-cf-app org-key=hello-world-org index=3
@@ -144,5 +151,5 @@ echo "##########################################################################
 echo "# Setup TOTP Backend                                                      #"
 echo "###########################################################################"
 
-echo "vault mount totp"
-${VAULT_BIN} mount totp || true
+echo "vault secrets enable totp"
+${VAULT_BIN} secrets enable totp
