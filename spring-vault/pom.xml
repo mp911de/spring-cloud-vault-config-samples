@@ -19,7 +19,7 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<spring-vault.version>2.0.1.RELEASE</spring-vault.version>
-		<spring.version>5.0.5.RELEASE</spring.version>
+		<spring.version>5.0.6.RELEASE</spring.version>
 	</properties>
 
 	<dependencyManagement>
