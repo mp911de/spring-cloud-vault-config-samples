@@ -33,6 +33,12 @@ matrix:
         - VAULT_VER=0.7.3
     - env:
         - PROFILE=ci
+        - VAULT_VER=0.8.3
+    - env:
+        - PROFILE=ci
+        - VAULT_VER=0.9.5
+    - env:
+        - PROFILE=ci
     - env:
         - PROFILE=spring5-next
 
