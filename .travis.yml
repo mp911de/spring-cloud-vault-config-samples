@@ -12,27 +12,6 @@ matrix:
   include:
     - env:
         - PROFILE=ci
-        - VAULT_VER=0.5.2
-    - env:
-        - PROFILE=ci
-        - VAULT_VER=0.5.3
-    - env:
-        - PROFILE=ci
-        - VAULT_VER=0.6.0
-    - env:
-        - PROFILE=ci
-        - VAULT_VER=0.6.5
-    - env:
-        - PROFILE=ci
-        - VAULT_VER=0.7.3
-    - env:
-        - PROFILE=ci
-        - VAULT_VER=0.8.3
-    - env:
-        - PROFILE=ci
-        - VAULT_VER=0.9.5
-    - env:
-        - PROFILE=ci
     - env:
         - PROFILE=spring5-next
 
