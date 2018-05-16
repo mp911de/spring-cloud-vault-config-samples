@@ -1,18 +1,12 @@
 language: java
 
-jdk: oraclejdk8
+jdk:
+  - oraclejdk8
 
 services:
   - mysql
 
 sudo: false
-
-addons:
-  apt:
-    sources:
-      - debian-sid
-    packages:
-      - libssl1.0.0
 
 matrix:
   include:
@@ -56,7 +50,7 @@ install:
   - mysql -uroot -e "GRANT ALL PRIVILEGES ON *.* TO 'spring'@'%' WITH GRANT OPTION;";
   - source src/test/bash/env.sh && src/test/bash/setup_examples.sh
 
-script: mvn clean verify -P${PROFILE}
+script: ./mvnw clean verify -P${PROFILE}
 
 after_script:
   - pkill vault
@@ -65,4 +59,5 @@ after_script:
 cache:
   directories:
     - '$HOME/.m2/repository'
+    - '$HOME/.m2/wrapper'
     - 'download'
