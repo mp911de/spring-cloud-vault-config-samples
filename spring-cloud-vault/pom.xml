@@ -72,7 +72,7 @@
 		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
-			<version>3.9.0</version>
+			<version>3.10.0</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -83,7 +83,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.5.1</version>
+				<version>3.7.0</version>
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
@@ -130,7 +130,7 @@
 		<profile>
 			<id>spring5-next</id>
 			<properties>
-				<spring.version>5.0.7.BUILD-SNAPSHOT</spring.version>
+				<spring.version>5.0.8.BUILD-SNAPSHOT</spring.version>
 			</properties>
 		</profile>
 	</profiles>
