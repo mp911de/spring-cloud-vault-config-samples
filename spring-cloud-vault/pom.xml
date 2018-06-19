@@ -31,7 +31,7 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<spring-cloud-vault.version>2.0.0.RC1</spring-cloud-vault.version>
+		<spring-cloud-vault.version>2.0.0.RELEASE</spring-cloud-vault.version>
 	</properties>
 
 	<dependencyManagement>
