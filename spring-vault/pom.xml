@@ -18,8 +18,8 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<spring-vault.version>2.0.1.RELEASE</spring-vault.version>
-		<spring.version>5.0.7.RELEASE</spring.version>
+		<spring-vault.version>2.1.0.RC1</spring-vault.version>
+		<spring.version>5.1.0.RC3</spring.version>
 	</properties>
 
 	<dependencyManagement>
@@ -44,7 +44,7 @@
 			<dependency>
 				<groupId>org.springframework.data</groupId>
 				<artifactId>spring-data-releasetrain</artifactId>
-				<version>Kay-SR8</version>
+				<version>Lovelace-RC2</version>
 				<scope>import</scope>
 				<type>pom</type>
 			</dependency>
@@ -69,7 +69,7 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.16.10</version>
+			<version>1.18.2</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -92,7 +92,7 @@
 		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
-			<version>3.10.0</version>
+			<version>3.11.0</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -156,7 +156,7 @@
 		<profile>
 			<id>spring5-next</id>
 			<properties>
-				<spring.version>5.0.8.BUILD-SNAPSHOT</spring.version>
+				<spring.version>5.1.0.BUILD-SNAPSHOT</spring.version>
 			</properties>
 		</profile>
 	</profiles>
