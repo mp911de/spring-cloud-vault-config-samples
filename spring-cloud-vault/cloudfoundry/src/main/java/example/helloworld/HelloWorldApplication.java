@@ -37,6 +37,7 @@ public class HelloWorldApplication {
 		if (StringUtils.isEmpty(System.getenv("VCAP_SERVICES"))) {
 			System.setProperty("spring.cloud.vault.ssl.trust-store",
 					"file:../../work/keystore.jks");
+			System.setProperty("spring.cloud.vault.ssl.trust-store-password", "changeit");
 		}
 
 		SpringApplication.run(HelloWorldApplication.class, args);
