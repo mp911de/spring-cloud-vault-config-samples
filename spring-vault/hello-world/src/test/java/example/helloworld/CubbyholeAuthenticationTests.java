@@ -19,6 +19,7 @@ import java.io.File;
 import java.util.Collections;
 import java.util.Map;
 
+import example.ExamplesSslConfiguration;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -45,7 +46,7 @@ import org.springframework.vault.support.VaultResponse;
 import org.springframework.vault.support.VaultToken;
 import org.springframework.web.client.RestOperations;
 
-import static example.util.WorkDirHelper.*;
+import static example.WorkDirHelper.*;
 import static org.assertj.core.api.Assertions.*;
 
 /**
@@ -134,9 +135,7 @@ public class CubbyholeAuthenticationTests {
 
 		@Override
 		public SslConfiguration sslConfiguration() {
-
-			return SslConfiguration.forTrustStore(new FileSystemResource(new File(
-					findWorkDir(), "keystore.jks")), "changeit");
+			return ExamplesSslConfiguration.create();
 		}
 	}
 }

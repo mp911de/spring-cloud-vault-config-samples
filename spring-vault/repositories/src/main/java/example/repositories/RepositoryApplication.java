@@ -15,14 +15,13 @@
  */
 package example.repositories;
 
-import java.io.File;
 import java.util.Optional;
 
+import example.ExamplesSslConfiguration;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.vault.authentication.ClientAuthentication;
 import org.springframework.vault.authentication.TokenAuthentication;
 import org.springframework.vault.client.VaultEndpoint;
@@ -31,8 +30,6 @@ import org.springframework.vault.core.VaultTemplate;
 import org.springframework.vault.repository.configuration.EnableVaultRepositories;
 import org.springframework.vault.support.SslConfiguration;
 import org.springframework.vault.support.VaultResponse;
-
-import static example.util.WorkDirHelper.*;
 
 /**
  * Sample Application using Spring Vault repositories.
@@ -89,10 +86,7 @@ public class RepositoryApplication {
 
 		@Override
 		public SslConfiguration sslConfiguration() {
-
-			return SslConfiguration.forTrustStore(
-					new FileSystemResource(new File(findWorkDir(), "keystore.jks")),
-					"changeit".toCharArray());
+			return ExamplesSslConfiguration.create();
 		}
 	}
 }

@@ -15,14 +15,12 @@
  */
 package example.helloworld;
 
-import java.io.File;
-
+import example.ExamplesSslConfiguration;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.vault.authentication.ClientAuthentication;
 import org.springframework.vault.authentication.TokenAuthentication;
 import org.springframework.vault.client.VaultEndpoint;
@@ -30,8 +28,6 @@ import org.springframework.vault.config.AbstractVaultConfiguration;
 import org.springframework.vault.core.VaultTemplate;
 import org.springframework.vault.support.SslConfiguration;
 import org.springframework.vault.support.VaultResponseSupport;
-
-import static example.util.WorkDirHelper.*;
 
 /**
  * Sample Application using Spring Vault with Token authentication.
@@ -49,6 +45,7 @@ public class HelloWorldApplication {
 		context.start();
 
 		VaultTemplate vaultTemplate = context.getBean(VaultTemplate.class);
+
 
 		MySecretData mySecretData = new MySecretData();
 		mySecretData.setUsername("walter");
@@ -81,9 +78,7 @@ public class HelloWorldApplication {
 
 		@Override
 		public SslConfiguration sslConfiguration() {
-
-			return SslConfiguration.forTrustStore(new FileSystemResource(new File(
-					findWorkDir(), "keystore.jks")), "changeit");
+			return ExamplesSslConfiguration.create();
 		}
 	}
 

@@ -14,6 +14,7 @@
 		<module>hello-world</module>
 		<module>cloudfoundry</module>
 		<module>repositories</module>
+		<module>util</module>
 	</modules>
 
 	<properties>
@@ -47,6 +48,12 @@
 				<version>Lovelace-RC2</version>
 				<scope>import</scope>
 				<type>pom</type>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.vault.examples</groupId>
+				<artifactId>spring-vault-examples-util</artifactId>
+				<version>${project.version}</version>
 			</dependency>
 
 		</dependencies>

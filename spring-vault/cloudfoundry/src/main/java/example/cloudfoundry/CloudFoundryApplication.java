@@ -15,8 +15,7 @@
  */
 package example.cloudfoundry;
 
-import java.io.File;
-
+import example.ExamplesSslConfiguration;
 import io.pivotal.spring.cloud.vault.config.java.VaultConnectorsConfig;
 import io.pivotal.spring.cloud.vault.service.VaultServiceConnectorConfig;
 import io.pivotal.spring.cloud.vault.service.common.VaultServiceInfo;
@@ -26,12 +25,9 @@ import org.springframework.cloud.Cloud;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.vault.core.VaultOperations;
 import org.springframework.vault.support.SslConfiguration;
 import org.springframework.vault.support.VaultResponse;
-
-import static example.util.WorkDirHelper.findWorkDir;
 
 /**
  * Sample application expecting {@code VCAP_APPLICATION} and {@code VCAP_SERVICES} env
@@ -83,9 +79,7 @@ public class CloudFoundryApplication {
 
 		@Bean
 		public SslConfiguration sslConfiguration() {
-			return SslConfiguration.forTrustStore(
-					new FileSystemResource(new File(findWorkDir(), "keystore.jks")),
-					"changeit");
+			return ExamplesSslConfiguration.create();
 		}
 	}
 }
