@@ -18,6 +18,12 @@ ${VAULT_BIN} secrets disable secret
 ${VAULT_BIN} secrets enable -path secret -version 1 kv
 
 echo "###########################################################################"
+echo "# Mounting versioned K/V backend at versioned/                            #"
+echo "###########################################################################"
+
+${VAULT_BIN} secrets enable -path versioned -version 2 kv
+
+echo "###########################################################################"
 echo "# Setup static AppId authentication                                       #"
 echo "###########################################################################"
 
