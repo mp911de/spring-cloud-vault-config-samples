@@ -19,7 +19,7 @@
 	</description>
 
 	<properties>
-		<spring-cloud-vault-spring-connector.version>2.0.0.RELEASE</spring-cloud-vault-spring-connector.version>
+		<spring-cloud-vault-spring-connector.version>2.0.1.RELEASE</spring-cloud-vault-spring-connector.version>
 	</properties>
 
 	<dependencies>
