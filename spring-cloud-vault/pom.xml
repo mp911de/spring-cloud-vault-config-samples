@@ -12,12 +12,13 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.1.9.RELEASE</version>
-		<relativePath /> <!-- lookup from repository -->
+		<version>2.4.2</version>
+		<relativePath/> <!-- lookup from repository -->
 	</parent>
 
 	<modules>
 		<module>hello-world</module>
+		<module>hello-world-bootstrap</module>
 		<module>appid</module>
 		<module>appid-custom-userid</module>
 		<module>cloudfoundry</module>
@@ -31,7 +32,7 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<spring-cloud-vault.version>2.1.3.RELEASE</spring-cloud-vault.version>
+		<spring-cloud.version>2020.0.0</spring-cloud.version>
 	</properties>
 
 	<dependencyManagement>
@@ -39,10 +40,10 @@
 
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-vault-dependencies</artifactId>
-				<version>${spring-cloud-vault.version}</version>
-				<scope>import</scope>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
 				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
 
 		</dependencies>
@@ -70,9 +71,16 @@
 		</dependency>
 
 		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.13.1</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
-			<version>3.10.0</version>
+			<version>3.19.0</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -130,7 +138,7 @@
 		<profile>
 			<id>spring5-next</id>
 			<properties>
-				<spring.version>5.0.8.BUILD-SNAPSHOT</spring.version>
+				<spring.version>5.3.4-SNAPSHOT</spring.version>
 			</properties>
 		</profile>
 	</profiles>
