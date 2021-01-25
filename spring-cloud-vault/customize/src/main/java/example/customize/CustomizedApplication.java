@@ -20,9 +20,12 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.vault.config.SecretBackendConfigurer;
 import org.springframework.cloud.vault.config.VaultBootstrapper;
-import org.springframework.cloud.vault.config.VaultConfigurer;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.vault.config.VaultBootstrapper;
 
 /**
  * Sample Application that customizes Spring Cloud Vault behavior.

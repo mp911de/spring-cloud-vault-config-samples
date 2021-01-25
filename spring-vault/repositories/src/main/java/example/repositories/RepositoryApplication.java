@@ -31,6 +31,20 @@ import org.springframework.vault.repository.configuration.EnableVaultRepositorie
 import org.springframework.vault.support.SslConfiguration;
 import org.springframework.vault.support.VaultResponse;
 
+import example.ExamplesSslConfiguration;
+import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.vault.authentication.ClientAuthentication;
+import org.springframework.vault.authentication.TokenAuthentication;
+import org.springframework.vault.client.VaultEndpoint;
+import org.springframework.vault.config.AbstractVaultConfiguration;
+import org.springframework.vault.core.VaultTemplate;
+import org.springframework.vault.repository.configuration.EnableVaultRepositories;
+import org.springframework.vault.support.SslConfiguration;
+import org.springframework.vault.support.VaultResponse;
+
 /**
  * Sample Application using Spring Vault repositories.
  *

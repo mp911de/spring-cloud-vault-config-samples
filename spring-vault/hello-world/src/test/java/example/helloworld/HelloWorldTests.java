@@ -17,23 +17,29 @@ package example.helloworld;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.vault.core.VaultOperations;
 import org.springframework.vault.support.VaultResponseSupport;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
+
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.vault.core.VaultOperations;
+import org.springframework.vault.support.VaultResponseSupport;
 
 /**
  * Simple interaction with {@link VaultOperations}.
  *
  * @author Mark Paluch
  */
-@RunWith(SpringRunner.class)
 @ContextConfiguration(classes = VaultTestConfiguration.class)
 @Slf4j
 public class HelloWorldTests {

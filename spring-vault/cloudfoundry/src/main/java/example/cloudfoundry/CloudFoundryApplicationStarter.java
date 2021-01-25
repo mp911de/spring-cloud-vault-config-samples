@@ -23,6 +23,9 @@ import java.util.Map;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StringUtils;
 
+import org.springframework.util.FileCopyUtils;
+import org.springframework.util.StringUtils;
+
 /**
  * Launcher for {@link CloudFoundryApplication} with environment variable setup from
  * {@code VCAP_SERVICES.json} and {@code VCAP_APPLICATION.json} files.

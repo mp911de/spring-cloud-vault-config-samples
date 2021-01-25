@@ -31,6 +31,20 @@ import org.springframework.vault.support.VaultCertificateResponse;
 import org.springframework.vault.support.VaultHealth;
 import org.springframework.vault.support.VaultResponseSupport;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+import lombok.experimental.UtilityClass;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.cloud.vault.config.VaultProperties;
+import org.springframework.vault.core.VaultOperations;
+import org.springframework.vault.support.CertificateBundle;
+import org.springframework.vault.support.VaultCertificateRequest;
+import org.springframework.vault.support.VaultCertificateResponse;
+import org.springframework.vault.support.VaultHealth;
+import org.springframework.vault.support.VaultResponseSupport;
+
 /**
  * Utility class to store and retrieve Certificates from Vault.
  *

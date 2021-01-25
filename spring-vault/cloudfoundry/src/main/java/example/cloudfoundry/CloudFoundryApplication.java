@@ -29,6 +29,20 @@ import org.springframework.vault.core.VaultOperations;
 import org.springframework.vault.support.SslConfiguration;
 import org.springframework.vault.support.VaultResponse;
 
+import example.ExamplesSslConfiguration;
+import io.pivotal.spring.cloud.vault.config.java.VaultConnectorsConfig;
+import io.pivotal.spring.cloud.vault.service.VaultServiceConnectorConfig;
+import io.pivotal.spring.cloud.vault.service.common.VaultServiceInfo;
+import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.cloud.Cloud;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.vault.core.VaultOperations;
+import org.springframework.vault.support.SslConfiguration;
+import org.springframework.vault.support.VaultResponse;
+
 /**
  * Sample application expecting {@code VCAP_APPLICATION} and {@code VCAP_SERVICES} env
  * variables to be set.

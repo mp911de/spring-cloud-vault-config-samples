@@ -1,6 +1,0 @@
----
-applications:
-- name: my-cf-app
-  memory: 512M
-  host: my-cf-app
-  path: target/spring-cloud-vault-config-cloudfoundry-1.0.0.BUILD-SNAPSHOT.jar

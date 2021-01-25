@@ -18,6 +18,9 @@ package example.totp;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 /**
  * Sample Application using Spring Cloud Vault with Token authentication to demonstrate
  * Vault's TOTP capabilities.

@@ -18,18 +18,24 @@ package example.totp;
 import java.util.Collections;
 
 import example.totp.TotpController.TotpKeyRequest;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.vault.core.VaultOperations;
 import org.springframework.vault.support.VaultResponse;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assume.assumeTrue;
+import static org.assertj.core.api.Assertions.*;
+
+import example.totp.TotpController.TotpKeyRequest;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.vault.core.VaultOperations;
+import org.springframework.vault.support.VaultResponse;
 
 /**
  * Tests showing Vault's TOTP backend usage with key generation, code generation and code
@@ -37,7 +43,6 @@ import static org.junit.Assume.assumeTrue;
  *
  * @author Mark Paluch
  */
-@RunWith(SpringRunner.class)
 @SpringBootTest
 public class TotpTests {
 
@@ -46,13 +51,14 @@ public class TotpTests {
 	@Autowired
 	VaultOperations vaultOperations;
 
-	@Before
-	public void before() throws Exception {
+	@BeforeEach
+	public void before() {
 
 		String version = vaultOperations.opsForSys().health().getVersion();
 
-		assumeTrue("TOTP is only available for Vault 0.7.2 and newer",
-				version != null && version.compareTo("0.7.1") >= 0);
+		assertThat(version)
+				.describedAs("TOTP is only available for Vault 0.7.2 and newer")
+				.isNotNull().isGreaterThan("0.7.1");
 
 		TotpKeyRequest request = new TotpKeyRequest("foo", "Spring Vault TOTP Demo");
 
@@ -71,6 +77,6 @@ public class TotpTests {
 				String.format("totp/code/%s", keyId),
 				Collections.singletonMap("code", code));
 
-		assertThat(verificationResponse.getData().get("valid")).isEqualTo(true);
+		assertThat(verificationResponse.getData()).containsEntry("valid", true);
 	}
 }

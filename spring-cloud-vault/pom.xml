@@ -21,7 +21,6 @@
 		<module>hello-world-bootstrap</module>
 		<module>appid</module>
 		<module>appid-custom-userid</module>
-		<module>cloudfoundry</module>
 		<module>consul</module>
 		<module>customize</module>
 		<module>mysql</module>
@@ -77,13 +76,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.13.1</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
 			<version>3.19.0</version>
@@ -131,8 +123,8 @@
 
 	<pluginRepositories>
 		<pluginRepository>
-			<id>spring-libs-milestone</id>
-			<url>https://repo.spring.io/libs-milestone</url>
+			<id>spring-libs-snapshot</id>
+			<url>https://repo.spring.io/libs-snapshot</url>
 		</pluginRepository>
 	</pluginRepositories>
 

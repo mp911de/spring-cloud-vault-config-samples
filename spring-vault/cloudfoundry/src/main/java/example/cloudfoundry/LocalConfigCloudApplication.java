@@ -24,6 +24,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import org.springframework.vault.core.VaultOperations;
 
+import io.pivotal.spring.cloud.vault.config.java.VaultConnectorsConfig;
+import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.cloud.config.java.ServiceScan;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
+import org.springframework.vault.core.VaultOperations;
+
 /**
  * Sample application using local config properties for testing Vault without VCAP env
  * variables. Requires {@code spring.cloud.appId} and a number of services to be

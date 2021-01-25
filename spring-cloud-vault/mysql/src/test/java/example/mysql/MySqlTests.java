@@ -21,14 +21,22 @@ import java.sql.Statement;
 
 import javax.sql.DataSource;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.SocketUtils;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assumptions.*;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.util.SocketUtils;
 
 /**
  * Spring Cloud Vault Config can obtain credentials for MySQL datasources. Credentials are
@@ -36,12 +44,18 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author Mark Paluch
  */
-@RunWith(SpringRunner.class)
 @SpringBootTest
 public class MySqlTests {
 
 	@Autowired
 	DataSource dataSource;
+
+	@BeforeAll
+	static void beforeAll() {
+
+		// A service is listening on 3306
+		assumeThat(SocketUtils.findAvailableTcpPorts(1, 3306, 3307)).isEmpty();
+	}
 
 	@Test
 	public void shouldConnectToMySql() throws Exception {

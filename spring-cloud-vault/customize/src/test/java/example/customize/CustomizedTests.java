@@ -15,30 +15,43 @@
  */
 package example.customize;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.SpringApplication;
+import org.springframework.cloud.vault.config.VaultBootstrapper;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
-import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.cloud.vault.config.VaultBootstrapper;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.env.Environment;
 
 /**
  * Integration test verifying customization.
  *
  * @author Mark Paluch
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest
 public class CustomizedTests {
-
-	@Autowired
-	Environment environment;
 
 	@Test
 	public void shouldHaveVaultProperties() {
+
+		SpringApplication application = new SpringApplication(
+				CustomizedApplication.class);
+		application.addBootstrapper(
+				VaultBootstrapper.fromConfigurer(secretBackendConfigurer -> {
+					secretBackendConfigurer.add(
+							"cf/1a558498-59ad-488c-b395-8b983aacb7da/secret/my-cf-app");
+				}));
+
+		ConfigurableApplicationContext context = application.run();
+
+		Environment environment = context.getEnvironment();
 
 		assertThat(environment.containsProperty("org-key")).isTrue();
 		assertThat(environment.getProperty("org-key")).isEqualTo("hello-world-org");

@@ -22,6 +22,9 @@ import org.springframework.vault.support.SslConfiguration;
 
 import static example.WorkDirHelper.*;
 
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.vault.support.SslConfiguration;
+
 /**
  * Configuration utility for SSL usage within the examples.
  *

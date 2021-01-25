@@ -15,24 +15,20 @@
  */
 package example.helloworld;
 
-import java.io.File;
 import java.util.Collections;
 import java.util.Map;
 
 import example.ExamplesSslConfiguration;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.vault.annotation.VaultPropertySource;
 import org.springframework.vault.authentication.ClientAuthentication;
 import org.springframework.vault.authentication.CubbyholeAuthentication;
@@ -46,15 +42,37 @@ import org.springframework.vault.support.VaultResponse;
 import org.springframework.vault.support.VaultToken;
 import org.springframework.web.client.RestOperations;
 
-import static example.WorkDirHelper.*;
 import static org.assertj.core.api.Assertions.*;
+
+import example.ExamplesSslConfiguration;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.vault.annotation.VaultPropertySource;
+import org.springframework.vault.authentication.ClientAuthentication;
+import org.springframework.vault.authentication.CubbyholeAuthentication;
+import org.springframework.vault.authentication.CubbyholeAuthenticationOptions;
+import org.springframework.vault.client.VaultEndpoint;
+import org.springframework.vault.config.AbstractVaultConfiguration;
+import org.springframework.vault.core.RestOperationsCallback;
+import org.springframework.vault.core.VaultOperations;
+import org.springframework.vault.support.SslConfiguration;
+import org.springframework.vault.support.VaultResponse;
+import org.springframework.vault.support.VaultToken;
+import org.springframework.web.client.RestOperations;
 
 /**
  * Setup and use Cubbyhole authentication.
  *
  * @author Mark Paluch
  */
-@RunWith(SpringRunner.class)
 @ContextConfiguration
 @Slf4j
 public class CubbyholeAuthenticationTests {
@@ -70,7 +88,7 @@ public class CubbyholeAuthenticationTests {
 	/**
 	 * Write some data to Vault before Vault can be used as {@link VaultPropertySource}.
 	 */
-	@BeforeClass
+	@BeforeAll
 	public static void beforeClass() {
 
 

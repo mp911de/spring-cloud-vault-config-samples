@@ -23,6 +23,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.consul.discovery.ConsulDiscoveryProperties;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.consul.discovery.ConsulDiscoveryProperties;
+
 /**
  * Sample Application using Spring Cloud Vault with Token authentication. Vault will
  * obtain a Consul ACL token.

@@ -13,7 +13,7 @@
 
 	<artifactId>spring-cloud-vault-config-customizer-example</artifactId>
 
-	<name>Spring Cloud Vault Config Hello World</name>
+	<name>Spring Cloud Vault Config Customizer</name>
 	<description>Demo project using Spring Cloud Vault with customization</description>
 
 	<dependencies>

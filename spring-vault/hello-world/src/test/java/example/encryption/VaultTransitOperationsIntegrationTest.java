@@ -19,26 +19,35 @@ import java.nio.charset.StandardCharsets;
 
 import example.helloworld.VaultTestConfiguration;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.vault.core.VaultOperations;
 import org.springframework.vault.core.VaultTransitOperations;
 import org.springframework.vault.support.VaultTransitContext;
 
 import static org.assertj.core.api.Java6Assertions.*;
 
+import example.helloworld.VaultTestConfiguration;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.vault.core.VaultOperations;
+import org.springframework.vault.core.VaultTransitOperations;
+import org.springframework.vault.support.VaultTransitContext;
+
 /**
  * Integration test using {@link VaultTransitOperations}.
  *
  * @author Mark Paluch
  */
-@RunWith(SpringRunner.class)
 @ContextConfiguration
 @Slf4j
 public class VaultTransitOperationsIntegrationTest {
@@ -52,7 +61,7 @@ public class VaultTransitOperationsIntegrationTest {
 
 	VaultTransitOperations transitOperations;
 
-	@Before
+	@BeforeEach
 	public void before() {
 		transitOperations = vaultOperations.opsForTransit();
 	}

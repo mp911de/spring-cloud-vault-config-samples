@@ -15,23 +15,27 @@
  */
 package example.repositories;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.vault.core.VaultTemplate;
 import org.springframework.vault.support.VaultResponse;
 
 import static org.assertj.core.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.vault.core.VaultTemplate;
+import org.springframework.vault.support.VaultResponse;
 
 /**
  * Test for Spring Cloud Vault Config with Spring Data repositories.
  *
  * @author Mark Paluch
  */
-@RunWith(SpringRunner.class)
 @SpringBootTest
 public class RepositoryTests {
 

@@ -36,6 +36,20 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.vault.core.VaultOperations;
 import org.springframework.vault.support.CertificateBundle;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.server.Ssl;
+import org.springframework.boot.web.server.SslStoreProvider;
+import org.springframework.boot.web.server.WebServerFactoryCustomizer;
+import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
+import org.springframework.cloud.vault.config.VaultProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.vault.core.VaultOperations;
+import org.springframework.vault.support.CertificateBundle;
+
 /**
  * {@link Configuration} to request SSL certificates and register a
  * {@link org.springframework.beans.factory.config.BeanPostProcessor} to configure SSL

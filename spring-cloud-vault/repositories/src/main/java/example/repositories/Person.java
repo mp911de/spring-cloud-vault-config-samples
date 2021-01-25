@@ -20,6 +20,11 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.vault.repository.mapping.Secret;
 
+import lombok.Data;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.vault.repository.mapping.Secret;
+
 /**
  * @author Mark Paluch
  */

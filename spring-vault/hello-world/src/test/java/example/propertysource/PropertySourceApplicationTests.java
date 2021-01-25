@@ -17,8 +17,7 @@ package example.propertysource;
 
 import example.helloworld.VaultTestConfiguration;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,17 +25,27 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.vault.annotation.VaultPropertySource;
 
 import static org.assertj.core.api.Java6Assertions.*;
+
+import example.helloworld.VaultTestConfiguration;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.vault.annotation.VaultPropertySource;
 
 /**
  * Integration test using {@link VaultPropertySource}.
  *
  * @author Mark Paluch
  */
-@RunWith(SpringRunner.class)
 @ContextConfiguration
 @Slf4j
 public class PropertySourceApplicationTests {
