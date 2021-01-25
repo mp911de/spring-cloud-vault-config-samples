@@ -17,11 +17,30 @@ package example.helloworld;
 
 import example.ExamplesSslConfiguration;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.vault.authentication.ClientAuthentication;
+import org.springframework.vault.authentication.SimpleSessionManager;
 import org.springframework.vault.authentication.TokenAuthentication;
+import org.springframework.vault.client.ClientHttpRequestFactoryFactory;
 import org.springframework.vault.client.VaultEndpoint;
 import org.springframework.vault.config.AbstractVaultConfiguration;
+import org.springframework.vault.core.VaultTemplate;
+import org.springframework.vault.support.SslConfiguration;
+
+import example.ExamplesSslConfiguration;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.vault.authentication.ClientAuthentication;
+import org.springframework.vault.authentication.SimpleSessionManager;
+import org.springframework.vault.authentication.TokenAuthentication;
+import org.springframework.vault.client.ClientHttpRequestFactoryFactory;
+import org.springframework.vault.client.VaultEndpoint;
+import org.springframework.vault.config.AbstractVaultConfiguration;
+import org.springframework.vault.core.VaultTemplate;
 import org.springframework.vault.support.SslConfiguration;
 
 /**
@@ -43,5 +62,15 @@ public class VaultTestConfiguration extends AbstractVaultConfiguration {
 	@Override
 	public SslConfiguration sslConfiguration() {
 		return ExamplesSslConfiguration.create();
+	}
+
+	@Bean
+	public VaultTemplate vaultTemplate() {
+
+		ClientHttpRequestFactory factory = ClientHttpRequestFactoryFactory
+				.create(clientOptions(), sslConfiguration());
+
+		return new VaultTemplate(vaultEndpoint(), factory,
+				new SimpleSessionManager(clientAuthentication()));
 	}
 }

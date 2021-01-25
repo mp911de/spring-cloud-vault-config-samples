@@ -23,6 +23,7 @@ import java.sql.Statement;
 
 import example.helloworld.VaultTestConfiguration;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -32,9 +33,26 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.SocketUtils;
 import org.springframework.vault.annotation.VaultPropertySource;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assumptions.*;
+
+import example.helloworld.VaultTestConfiguration;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.SocketUtils;
+import org.springframework.vault.annotation.VaultPropertySource;
 
 /**
  * Integration test using {@link VaultPropertySource} to connect MySQL with generated
@@ -54,6 +72,13 @@ public class MySqlPropertySourceApplicationTests {
 
 	@Autowired
 	DatabaseConfiguration databaseConfiguration;
+
+	@BeforeClass
+	public static void beforeClass() {
+
+		// If empty, then a MySQL process is listening.
+		assumeThat(SocketUtils.findAvailableTcpPorts(1, 3306, 3307)).isEmpty();
+	}
 
 	@Test
 	public void shouldProvideConfigurationThroughBean() throws SQLException {

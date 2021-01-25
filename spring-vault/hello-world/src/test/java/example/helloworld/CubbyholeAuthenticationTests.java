@@ -73,6 +73,7 @@ public class CubbyholeAuthenticationTests {
 	@BeforeClass
 	public static void beforeClass() {
 
+
 		VaultOperations vaultOperations = new VaultTestConfiguration().vaultTemplate();
 		vaultOperations.write("secret/myapp/configuration",
 				Collections.singletonMap("configuration.key", "value"));
