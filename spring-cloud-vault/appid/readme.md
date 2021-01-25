@@ -17,7 +17,7 @@ can use IP Address, Mac Address, static or custom determined UserId's.
 This example uses the Hex-encoded SHA-256 of the Mac-Address as UserId.
 
 Prerequisite: Identify a connected network interface and store it
-in `bootstrap.properties`, `spring.cloud.vault.app-id.network-interface`.
+in `application.properties`, `spring.cloud.vault.app-id.network-interface`.
 
 ```
 $ src/test/bash/mac_address_sha256.sh en0 # Prints the hex-encoded SHA-256

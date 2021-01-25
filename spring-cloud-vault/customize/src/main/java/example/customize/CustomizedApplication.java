@@ -20,6 +20,9 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.vault.config.SecretBackendConfigurer;
+import org.springframework.cloud.vault.config.VaultBootstrapper;
+import org.springframework.cloud.vault.config.VaultConfigurer;
 
 /**
  * Sample Application that customizes Spring Cloud Vault behavior.
@@ -30,7 +33,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class CustomizedApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(CustomizedApplication.class, args);
+
+		SpringApplication application = new SpringApplication(CustomizedApplication.class);
+		application.addBootstrapper(VaultBootstrapper.fromConfigurer(secretBackendConfigurer -> {
+			secretBackendConfigurer
+					.add("cf/1a558498-59ad-488c-b395-8b983aacb7da/secret/my-cf-app");
+		}));
+
+		application.run(args);
 	}
 
 	@Value("${org-key}")

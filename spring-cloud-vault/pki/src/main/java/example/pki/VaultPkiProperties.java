@@ -18,7 +18,12 @@ package example.pki;
 import java.util.List;
 
 import lombok.Data;
-import org.hibernate.validator.constraints.NotEmpty;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.vault.config.VaultSecretBackendDescriptor;
+import org.springframework.validation.annotation.Validated;
+
+import lombok.Data;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.vault.config.VaultSecretBackendDescriptor;
@@ -42,19 +47,16 @@ public class VaultPkiProperties implements VaultSecretBackendDescriptor {
 	/**
 	 * Role name for credentials.
 	 */
-	@NotEmpty
 	private String role;
 
 	/**
 	 * pki backend path.
 	 */
-	@NotEmpty
 	private String backend = "pki";
 
 	/**
 	 * The CN of the certificate. Should match the host name.
 	 */
-	@NotEmpty
 	private String commonName;
 
 	/**

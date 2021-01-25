@@ -19,9 +19,19 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.cloud.vault.config.SecretBackendConfigurer;
 import org.springframework.cloud.vault.config.VaultConfigurer;
-import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
+import org.springframework.vault.core.lease.SecretLeaseContainer;
+import org.springframework.vault.core.lease.domain.RequestedSecret;
+import org.springframework.vault.core.lease.event.LeaseListener;
+import org.springframework.vault.core.lease.event.SecretLeaseEvent;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.cloud.vault.config.VaultConfigurer;
+import org.springframework.stereotype.Component;
 import org.springframework.vault.core.lease.SecretLeaseContainer;
 import org.springframework.vault.core.lease.domain.RequestedSecret;
 import org.springframework.vault.core.lease.event.LeaseListener;
@@ -41,6 +51,7 @@ import org.springframework.vault.core.lease.event.SecretLeaseEvent;
  */
 @Slf4j
 @RequiredArgsConstructor
+@Component
 public class CustomConfiguration implements InitializingBean {
 
 	private final SecretLeaseContainer leaseContainer;
@@ -64,18 +75,4 @@ public class CustomConfiguration implements InitializingBean {
 		leaseContainer.addRequestedSecret(secret);
 	}
 
-	// Customization of property sources.
-	@Bean
-	public VaultConfigurer configurer() {
-
-		return new VaultConfigurer() {
-			@Override
-			public void addSecretBackends(
-					SecretBackendConfigurer secretBackendConfigurer) {
-
-				secretBackendConfigurer
-						.add("cf/1a558498-59ad-488c-b395-8b983aacb7da/secret/my-cf-app");
-			}
-		};
-	}
 }
