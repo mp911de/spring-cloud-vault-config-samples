@@ -18,30 +18,28 @@ package example.pki;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
+import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Consumer;
+
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.TrustManagerFactory;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.ssl.NoSuchSslBundleException;
+import org.springframework.boot.ssl.SslBundle;
+import org.springframework.boot.ssl.SslBundleKey;
+import org.springframework.boot.ssl.SslBundles;
+import org.springframework.boot.ssl.SslManagerBundle;
+import org.springframework.boot.ssl.SslOptions;
+import org.springframework.boot.ssl.SslStoreBundle;
 import org.springframework.boot.web.server.Ssl;
-import org.springframework.boot.web.server.SslStoreProvider;
-import org.springframework.boot.web.server.WebServerFactoryCustomizer;
-import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
-import org.springframework.cloud.vault.config.VaultProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.vault.core.VaultOperations;
-import org.springframework.vault.support.CertificateBundle;
-
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.boot.autoconfigure.web.ServerProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.web.server.Ssl;
-import org.springframework.boot.web.server.SslStoreProvider;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
 import org.springframework.cloud.vault.config.VaultProperties;
@@ -119,6 +117,7 @@ public class VaultPkiConfiguration {
 
 		if (ssl != null) {
 			ssl.setKeyAlias("vault");
+			ssl.setBundle("vault");
 			ssl.setKeyPassword("");
 			ssl.setKeyStorePassword("");
 		}
@@ -176,18 +175,65 @@ public class VaultPkiConfiguration {
 				trustStore.setCertificateEntry("cert",
 						certificateBundle.getX509Certificate());
 
-				container.setSslStoreProvider(new SslStoreProvider() {
+				container.setSslBundles(new SslBundles() {
 					@Override
-					public KeyStore getKeyStore() throws Exception {
-						return keyStore;
+					public SslBundle getBundle(String name)
+							throws NoSuchSslBundleException {
+						return new SslBundle() {
+							@Override
+							public SslStoreBundle getStores() {
+								return new SslStoreBundle() {
+									@Override
+									public KeyStore getKeyStore() {
+										return keyStore;
+									}
+
+									@Override
+									public String getKeyStorePassword() {
+										return "";
+									}
+
+									@Override
+									public KeyStore getTrustStore() {
+										return trustStore;
+									}
+								};
+							}
+
+							@Override
+							public SslBundleKey getKey() {
+								return SslBundleKey.NONE;
+							}
+
+							@Override
+							public SslOptions getOptions() {
+								return SslOptions.NONE;
+							}
+
+							@Override
+							public String getProtocol() {
+								return "TLS";
+							}
+
+							@Override
+							public SslManagerBundle getManagers() {
+								return new DefaultSslManagerBundle(getStores(), getKey());
+							}
+						};
 					}
 
 					@Override
-					public KeyStore getTrustStore() throws Exception {
-						return trustStore;
+					public void addBundleUpdateHandler(String name,
+							Consumer<SslBundle> updateHandler)
+							throws NoSuchSslBundleException {
+
+					}
+
+					@Override
+					public List<String> getBundleNames() {
+						return List.of();
 					}
 				});
-
 			}
 			catch (IOException | GeneralSecurityException e) {
 				throw new IllegalStateException(
@@ -218,5 +264,72 @@ public class VaultPkiConfiguration {
 		 * @return the {@link Lock}.
 		 */
 		Lock getLock();
+	}
+
+	/**
+	 * Default implementation of {@link SslManagerBundle}.
+	 *
+	 * @author Scott Frederick
+	 * @see SslManagerBundle#from(SslStoreBundle, SslBundleKey)
+	 */
+	static class DefaultSslManagerBundle implements SslManagerBundle {
+
+		private final SslStoreBundle storeBundle;
+
+		private final SslBundleKey key;
+
+		DefaultSslManagerBundle(SslStoreBundle storeBundle, SslBundleKey key) {
+			this.storeBundle = (storeBundle != null) ? storeBundle : SslStoreBundle.NONE;
+			this.key = (key != null) ? key : SslBundleKey.NONE;
+		}
+
+		@Override
+		public KeyManagerFactory getKeyManagerFactory() {
+			try {
+				KeyStore store = this.storeBundle.getKeyStore();
+				this.key.assertContainsAlias(store);
+				String alias = this.key.getAlias();
+				String algorithm = KeyManagerFactory.getDefaultAlgorithm();
+				KeyManagerFactory factory = getKeyManagerFactoryInstance(algorithm);
+				String password = this.key.getPassword();
+				password = (password != null) ? password
+						: this.storeBundle.getKeyStorePassword();
+				factory.init(store, (password != null) ? password.toCharArray() : null);
+				return factory;
+			}
+			catch (RuntimeException ex) {
+				throw ex;
+			}
+			catch (Exception ex) {
+				throw new IllegalStateException(
+						"Could not load key manager factory: " + ex.getMessage(), ex);
+			}
+		}
+
+		@Override
+		public TrustManagerFactory getTrustManagerFactory() {
+			try {
+				KeyStore store = this.storeBundle.getTrustStore();
+				String algorithm = TrustManagerFactory.getDefaultAlgorithm();
+				TrustManagerFactory factory = getTrustManagerFactoryInstance(algorithm);
+				factory.init(store);
+				return factory;
+			}
+			catch (Exception ex) {
+				throw new IllegalStateException(
+						"Could not load trust manager factory: " + ex.getMessage(), ex);
+			}
+		}
+
+		protected KeyManagerFactory getKeyManagerFactoryInstance(String algorithm)
+				throws NoSuchAlgorithmException {
+			return KeyManagerFactory.getInstance(algorithm);
+		}
+
+		protected TrustManagerFactory getTrustManagerFactoryInstance(String algorithm)
+				throws NoSuchAlgorithmException {
+			return TrustManagerFactory.getInstance(algorithm);
+		}
+
 	}
 }

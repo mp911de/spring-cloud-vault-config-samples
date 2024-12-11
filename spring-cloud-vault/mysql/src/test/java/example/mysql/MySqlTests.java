@@ -15,10 +15,13 @@
  */
 package example.mysql;
 
+import java.net.InetAddress;
+import java.net.ServerSocket;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import javax.net.ServerSocketFactory;
 import javax.sql.DataSource;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -26,17 +29,9 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.util.SocketUtils;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assumptions.*;
-
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.util.SocketUtils;
 
 /**
  * Spring Cloud Vault Config can obtain credentials for MySQL datasources. Credentials are
@@ -54,7 +49,20 @@ public class MySqlTests {
 	static void beforeAll() {
 
 		// A service is listening on 3306
-		assumeThat(SocketUtils.findAvailableTcpPorts(1, 3306, 3307)).isEmpty();
+		// If empty, then a MySQL process is listening.
+		assumeThat(isPortAvailable(3306)).isFalse();
+	}
+
+	static boolean isPortAvailable(int port) {
+		try {
+			ServerSocket serverSocket = ServerSocketFactory.getDefault()
+					.createServerSocket(port, 1, InetAddress.getByName("localhost"));
+			serverSocket.close();
+			return true;
+		}
+		catch (Exception ex) {
+			return false;
+		}
 	}
 
 	@Test

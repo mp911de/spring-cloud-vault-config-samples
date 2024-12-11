@@ -22,9 +22,6 @@ import org.springframework.vault.support.SslConfiguration;
 
 import static example.WorkDirHelper.*;
 
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.vault.support.SslConfiguration;
-
 /**
  * Configuration utility for SSL usage within the examples.
  *
@@ -41,6 +38,6 @@ public class ExamplesSslConfiguration {
 	public static SslConfiguration create() {
 		return SslConfiguration.forTrustStore(
 				new FileSystemResource(new File(findWorkDir(), "keystore.jks")),
-				"changeit");
+				"changeit".toCharArray());
 	}
 }

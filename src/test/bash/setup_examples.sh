@@ -23,19 +23,6 @@ echo "##########################################################################
 
 ${VAULT_BIN} secrets enable -path versioned -version 2 kv
 
-echo "###########################################################################"
-echo "# Setup static AppId authentication                                       #"
-echo "###########################################################################"
-
-echo "vault auth enable app-id"
-${VAULT_BIN} auth enable app-id
-
-echo "vault write auth/app-id/map/app-id/my-spring-boot-app value=default display_name=spring-boot-app"
-${VAULT_BIN} write auth/app-id/map/app-id/my-spring-boot-app value=read-secret display_name=spring-boot-app
-
-echo "vault write auth/app-id/map/user-id/my-static-userid value=my-spring-boot-app"
-${VAULT_BIN} write auth/app-id/map/user-id/my-static-userid value=my-spring-boot-app
-
 nc -w 1 localhost 3306 > /dev/null
 
 if [[ $? == 0 ]] ; then
@@ -109,8 +96,8 @@ echo "##########################################################################
 echo "vault kv put secret/my-spring-boot-app mykey=myvalue hello.world='Hello, World'"
 ${VAULT_BIN} kv put secret/my-spring-boot-app mykey=myvalue hello.world='Hello, World'
 
-echo "vault kv put secret/my-spring-boot-app/cloud key_for_cloud_profile=value"
-${VAULT_BIN} kv put secret/my-spring-boot-app/cloud key_for_cloud_profile=value
+echo "vault kv put secret/my-spring-boot-app/cloud key_for_cloud_profile=value mykey=cloud"
+${VAULT_BIN} kv put secret/my-spring-boot-app/cloud key_for_cloud_profile=value mykey=cloud
 
 echo "vault kv put secret/my-spring-app database.username=myuser database.password=mypassword"
 ${VAULT_BIN} kv put secret/my-spring-app database.username=myuser database.password=mypassword

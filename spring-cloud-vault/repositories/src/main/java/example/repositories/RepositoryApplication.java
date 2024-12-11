@@ -17,17 +17,7 @@ package example.repositories;
 
 import java.util.Optional;
 
-import javax.annotation.PostConstruct;
-
-import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.vault.core.VaultTemplate;
-import org.springframework.vault.repository.configuration.EnableVaultRepositories;
-import org.springframework.vault.support.VaultResponse;
-
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;

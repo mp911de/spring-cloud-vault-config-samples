@@ -26,15 +26,6 @@ import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.*;
 
-import org.junit.jupiter.api.Test;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
-import org.springframework.test.context.ActiveProfiles;
-
 /**
  * Spring Cloud Vault Config can use profiles to retrieve properties from different
  * contexts.
@@ -56,7 +47,7 @@ public class VaultConfigWithProfileTests {
 	@Test
 	public void shouldHaveVaultProperties() {
 
-		assertThat(environment.containsProperty("mykey")).isTrue();
-		assertThat(environment.containsProperty("key_for_cloud_profile")).isTrue();
+		assertThat(environment.getProperty("mykey")).isEqualTo("cloud");
+		assertThat(environment.getProperty("key_for_cloud_profile")).isEqualTo("value");
 	}
 }

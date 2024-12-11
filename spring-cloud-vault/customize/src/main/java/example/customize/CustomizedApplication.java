@@ -15,12 +15,7 @@
  */
 package example.customize;
 
-import javax.annotation.PostConstruct;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.vault.config.VaultBootstrapper;
+import jakarta.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -37,16 +32,18 @@ public class CustomizedApplication {
 
 	public static void main(String[] args) {
 
-		SpringApplication application = new SpringApplication(CustomizedApplication.class);
-		application.addBootstrapper(VaultBootstrapper.fromConfigurer(secretBackendConfigurer -> {
-			secretBackendConfigurer
-					.add("cf/1a558498-59ad-488c-b395-8b983aacb7da/secret/my-cf-app");
-		}));
+		SpringApplication application = new SpringApplication(
+				CustomizedApplication.class);
+		application.addBootstrapRegistryInitializer(
+				VaultBootstrapper.fromConfigurer(secretBackendConfigurer -> {
+					secretBackendConfigurer.add(
+							"cf/1a558498-59ad-488c-b395-8b983aacb7da/secret/my-cf-app");
+				}));
 
 		application.run(args);
 	}
 
-	@Value("${org-key}")
+	@Value("${my-key}")
 	String orgKey;
 
 	@PostConstruct

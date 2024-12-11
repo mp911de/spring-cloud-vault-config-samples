@@ -12,15 +12,13 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.4.2</version>
+		<version>3.4.0</version>
 		<relativePath/> <!-- lookup from repository -->
 	</parent>
 
 	<modules>
 		<module>hello-world</module>
 		<module>hello-world-bootstrap</module>
-		<module>appid</module>
-		<module>appid-custom-userid</module>
 		<module>consul</module>
 		<module>customize</module>
 		<module>mysql</module>
@@ -30,8 +28,7 @@
 	</modules>
 
 	<properties>
-		<java.version>1.8</java.version>
-		<spring-cloud.version>2020.0.0</spring-cloud.version>
+		<spring-cloud.version>2024.0.0</spring-cloud.version>
 	</properties>
 
 	<dependencyManagement>
@@ -43,12 +40,6 @@
 				<version>${spring-cloud.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
-			</dependency>
-
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-vault-config</artifactId>
-				<version>3.0.1-SNAPSHOT</version>
 			</dependency>
 
 		</dependencies>

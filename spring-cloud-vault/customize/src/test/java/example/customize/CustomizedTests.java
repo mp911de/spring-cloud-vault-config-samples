@@ -24,13 +24,6 @@ import org.springframework.core.env.Environment;
 
 import static org.assertj.core.api.Assertions.*;
 
-import org.junit.jupiter.api.Test;
-
-import org.springframework.boot.SpringApplication;
-import org.springframework.cloud.vault.config.VaultBootstrapper;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.core.env.Environment;
-
 /**
  * Integration test verifying customization.
  *
@@ -43,7 +36,7 @@ public class CustomizedTests {
 
 		SpringApplication application = new SpringApplication(
 				CustomizedApplication.class);
-		application.addBootstrapper(
+		application.addBootstrapRegistryInitializer(
 				VaultBootstrapper.fromConfigurer(secretBackendConfigurer -> {
 					secretBackendConfigurer.add(
 							"cf/1a558498-59ad-488c-b395-8b983aacb7da/secret/my-cf-app");
