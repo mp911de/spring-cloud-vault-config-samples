@@ -29,12 +29,14 @@ import example.helloworld.VaultTestConfiguration;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.vault.annotation.VaultPropertySource;
 
 import static org.assertj.core.api.Assertions.*;
@@ -47,6 +49,7 @@ import static org.assertj.core.api.Assumptions.*;
  * @author Mark Paluch
  */
 @ContextConfiguration
+@ExtendWith(SpringExtension.class)
 @Slf4j
 public class MySqlPropertySourceApplicationTests {
 

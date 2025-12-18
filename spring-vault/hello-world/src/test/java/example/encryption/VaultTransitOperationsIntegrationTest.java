@@ -25,6 +25,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.vault.core.VaultOperations;
 import org.springframework.vault.core.VaultTransitOperations;
 import org.springframework.vault.support.VaultTransitContext;
@@ -35,6 +36,7 @@ import example.helloworld.VaultTestConfiguration;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -49,6 +51,7 @@ import org.springframework.vault.support.VaultTransitContext;
  * @author Mark Paluch
  */
 @ContextConfiguration
+@ExtendWith(SpringExtension.class)
 @Slf4j
 public class VaultTransitOperationsIntegrationTest {
 

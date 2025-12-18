@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.vault.core.VaultOperations;
 import org.springframework.vault.support.VaultResponseSupport;
 
@@ -29,6 +30,7 @@ import static org.assertj.core.api.Assertions.*;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -41,6 +43,7 @@ import org.springframework.vault.support.VaultResponseSupport;
  * @author Mark Paluch
  */
 @ContextConfiguration(classes = VaultTestConfiguration.class)
+@ExtendWith(SpringExtension.class)
 @Slf4j
 public class HelloWorldTests {
 

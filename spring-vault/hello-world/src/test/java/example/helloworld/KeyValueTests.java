@@ -22,9 +22,11 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.vault.VaultException;
 import org.springframework.vault.core.VaultKeyValueOperations;
 import org.springframework.vault.core.VaultKeyValueOperationsSupport.KeyValueBackend;
@@ -37,29 +39,13 @@ import org.springframework.vault.support.Versioned.Version;
 
 import static org.assertj.core.api.Assertions.*;
 
-import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
-import org.junit.jupiter.api.Test;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.vault.VaultException;
-import org.springframework.vault.core.VaultKeyValueOperations;
-import org.springframework.vault.core.VaultKeyValueOperationsSupport.KeyValueBackend;
-import org.springframework.vault.core.VaultOperations;
-import org.springframework.vault.core.VaultVersionedKeyValueOperations;
-import org.springframework.vault.support.VaultResponseSupport;
-import org.springframework.vault.support.Versioned;
-import org.springframework.vault.support.Versioned.Metadata;
-import org.springframework.vault.support.Versioned.Version;
-
 /**
  * Simple interaction with {@link VaultOperations}.
  *
  * @author Mark Paluch
  */
 @ContextConfiguration(classes = VaultTestConfiguration.class)
+@ExtendWith(SpringExtension.class)
 @Slf4j
 public class KeyValueTests {
 
@@ -182,6 +168,9 @@ public class KeyValueTests {
 	static class MySecretData {
 
 		String securityQuestion;
+
 		String answer;
+
 	}
+
 }

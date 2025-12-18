@@ -29,6 +29,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.vault.annotation.VaultPropertySource;
 import org.springframework.vault.authentication.ClientAuthentication;
 import org.springframework.vault.authentication.CubbyholeAuthentication;
@@ -48,6 +49,7 @@ import example.ExamplesSslConfiguration;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -74,6 +76,7 @@ import org.springframework.web.client.RestOperations;
  * @author Mark Paluch
  */
 @ContextConfiguration
+@ExtendWith(SpringExtension.class)
 @Slf4j
 public class CubbyholeAuthenticationTests {
 

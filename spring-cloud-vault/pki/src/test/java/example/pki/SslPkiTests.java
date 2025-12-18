@@ -63,7 +63,7 @@ public class SslPkiTests {
 		ResponseEntity<String> response = restTemplate
 				.getForEntity("https://localhost:" + port, String.class);
 
-		assertThat(response.getStatusCodeValue()).isEqualTo(200);
+		assertThat(response.getStatusCode().value()).isEqualTo(200);
 		assertThat(response.getBody()).isEqualTo("Hello, World");
 	}
 
