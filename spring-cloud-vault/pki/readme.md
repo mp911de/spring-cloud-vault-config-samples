@@ -4,17 +4,18 @@ Spring Cloud Vault Config PKI Integration
 This example uses Spring Cloud Vault Config
 usage with the PKI integration.
 
-`VaultPkiConfiguration` will obtain a SSL certificate
-from Vault and configure Spring Boot's embedded Web-Server
-accordingly.
+Property-based configuration registers a Vault-managed
+SSL bundle requesting a certificate for the common name `localhost`
+to configure TLS for the embedded web server.
+Additionally, the configured `RestClient` uses Vault's CA certificate
+to validate the server certificate during TLS handshake.
 
 ## Running the Example
 
-The example setup script `src/test/bash/setup_examples.sh`
-will mount and configure the `pki` backend.
-
 You can start `CertificateOnDemandApplication` directly and
-access the server via [https://localhost:8443](https://localhost:8443). 
+access the server via [https://localhost:8443](https://localhost:8443).
+The application uses Vault within a Testcontainer so make sure to have
+a running Docker environment.
 
 **Expect an SSL alert since the used root certificate is not
 a known/trusted CA but a self-generated certificate.**

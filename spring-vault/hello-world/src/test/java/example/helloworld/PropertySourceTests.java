@@ -15,11 +15,14 @@
  */
 package example.helloworld;
 
-import java.util.Collections;
-
+import example.TestSettings;
+import example.VaultContainers;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.vault.VaultContainer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -28,24 +31,10 @@ import org.springframework.core.env.Environment;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.vault.annotation.VaultPropertySource;
-import org.springframework.vault.core.VaultOperations;
+import org.springframework.vault.client.VaultEndpoint;
 import org.springframework.vault.core.VaultTemplate;
 
 import static org.assertj.core.api.Assertions.*;
-
-import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.vault.annotation.VaultPropertySource;
-import org.springframework.vault.core.VaultOperations;
-import org.springframework.vault.core.VaultTemplate;
 
 /**
  * Tests showing {@code @VaultPropertySource} usage.
@@ -55,7 +44,24 @@ import org.springframework.vault.core.VaultTemplate;
 @ContextConfiguration
 @ExtendWith(SpringExtension.class)
 @Slf4j
+@Testcontainers
 public class PropertySourceTests {
+
+	@Container
+	static VaultContainer<?> vaultContainer = VaultContainers.create(it -> {
+		it.withInitCommand("kv put secret/myapp/configuration configuration.key=value");
+	});
+
+	@Configuration
+	@VaultPropertySource("secret/myapp/configuration")
+	static class Config extends VaultTestConfiguration {
+
+		@Override
+		public VaultEndpoint vaultEndpoint() {
+			return TestSettings.endpoint(vaultContainer);
+		}
+
+	}
 
 	@Autowired
 	ApplicationContext applicationContext;
@@ -64,20 +70,8 @@ public class PropertySourceTests {
 	VaultTemplate vaultTemplate;
 
 	/**
-	 * Write some data to Vault before Vault can be used as
-	 * {@link org.springframework.vault.annotation.VaultPropertySource}.
-	 */
-	@BeforeAll
-	public static void beforeClass() {
-
-		VaultOperations vaultOperations = new VaultTestConfiguration().vaultTemplate();
-		vaultOperations.write("secret/myapp/configuration",
-				Collections.singletonMap("configuration.key", "value"));
-	}
-
-	/**
-	 * {@code @VaultPropertySource("secret/myapp/configuration")} will register a property
-	 * source and expose its properties through {@link Environment}.
+	 * {@code @VaultPropertySource("secret/myapp/configuration")} will register a
+	 * property source and expose its properties through {@link Environment}.
 	 */
 	@Test
 	public void environmentShouldExposeVaultPropertySource() {
@@ -88,8 +82,8 @@ public class PropertySourceTests {
 	}
 
 	/**
-	 * {@code @VaultPropertySource("secret/myapp/configuration")} will register a property
-	 * source and expose its properties through {@link Environment}.
+	 * {@code @VaultPropertySource("secret/myapp/configuration")} will register a
+	 * property source and expose its properties through {@link Environment}.
 	 */
 	@Test
 	public void vaultPropertySourceShouldContainProperties() {
@@ -100,11 +94,5 @@ public class PropertySourceTests {
 		assertThat(propertySource.getProperty("configuration.key")).isEqualTo("value");
 	}
 
-	/**
-	 * Java Configuration to bootstrap Spring Vault.
-	 */
-	@Configuration
-	@VaultPropertySource("secret/myapp/configuration")
-	static class VaultPropertySourceConfiguration extends VaultTestConfiguration {
-	}
+
 }

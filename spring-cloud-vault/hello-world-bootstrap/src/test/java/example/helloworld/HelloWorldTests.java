@@ -15,6 +15,7 @@
  */
 package example.helloworld;
 
+import example.VaultContainers;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ import org.springframework.core.env.Environment;
 import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.vault.VaultContainer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,7 +39,14 @@ import org.springframework.core.env.Environment;
  * @author Mark Paluch
  */
 @SpringBootTest
+@Testcontainers
 public class HelloWorldTests {
+
+	@Container
+	static VaultContainer<?> vaultContainer = VaultContainers.create(it -> {
+		it.withInitCommand("kv put secret/my-spring-boot-app mykey=myvalue hello.world='Hello, World'");
+		it.withInitCommand("kv put secret/my-spring-boot-app/cloud key_for_cloud_profile=value mykey=cloud");
+	});
 
 	@Autowired
 	Environment environment;

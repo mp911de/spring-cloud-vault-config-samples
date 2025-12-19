@@ -19,12 +19,10 @@
 	<modules>
 		<module>hello-world</module>
 		<module>hello-world-bootstrap</module>
-		<module>consul</module>
 		<module>customize</module>
 		<module>mysql</module>
 		<module>pki</module>
 		<module>repositories</module>
-		<module>totp-web</module>
 	</modules>
 
 	<properties>

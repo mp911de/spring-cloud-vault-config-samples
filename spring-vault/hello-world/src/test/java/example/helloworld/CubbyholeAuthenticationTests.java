@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2018 the original author or authors.
+ * Copyright 2025-present the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,13 +18,17 @@ package example.helloworld;
 import java.util.Collections;
 import java.util.Map;
 
-import example.ExamplesSslConfiguration;
+import example.TestSettings;
+import example.VaultContainers;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.vault.VaultContainer;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -35,40 +39,14 @@ import org.springframework.vault.authentication.ClientAuthentication;
 import org.springframework.vault.authentication.CubbyholeAuthentication;
 import org.springframework.vault.authentication.CubbyholeAuthenticationOptions;
 import org.springframework.vault.client.VaultEndpoint;
-import org.springframework.vault.config.AbstractVaultConfiguration;
 import org.springframework.vault.core.RestOperationsCallback;
 import org.springframework.vault.core.VaultOperations;
-import org.springframework.vault.support.SslConfiguration;
+import org.springframework.vault.core.VaultTemplate;
 import org.springframework.vault.support.VaultResponse;
 import org.springframework.vault.support.VaultToken;
 import org.springframework.web.client.RestOperations;
 
 import static org.assertj.core.api.Assertions.*;
-
-import example.ExamplesSslConfiguration;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.vault.annotation.VaultPropertySource;
-import org.springframework.vault.authentication.ClientAuthentication;
-import org.springframework.vault.authentication.CubbyholeAuthentication;
-import org.springframework.vault.authentication.CubbyholeAuthenticationOptions;
-import org.springframework.vault.client.VaultEndpoint;
-import org.springframework.vault.config.AbstractVaultConfiguration;
-import org.springframework.vault.core.RestOperationsCallback;
-import org.springframework.vault.core.VaultOperations;
-import org.springframework.vault.support.SslConfiguration;
-import org.springframework.vault.support.VaultResponse;
-import org.springframework.vault.support.VaultToken;
-import org.springframework.web.client.RestOperations;
 
 /**
  * Setup and use Cubbyhole authentication.
@@ -78,45 +56,52 @@ import org.springframework.web.client.RestOperations;
 @ContextConfiguration
 @ExtendWith(SpringExtension.class)
 @Slf4j
+@Testcontainers
 public class CubbyholeAuthenticationTests {
 
-	private static VaultToken initialToken;
+	@Container
+	static VaultContainer<?> vaultContainer = VaultContainers.create(it -> {
+		it.withInitCommand("secrets disable secret/");
+		it.withInitCommand("secrets enable -path=secret -version=1 kv");
+	});
 
-	@Autowired
-	ApplicationContext applicationContext;
+	private static VaultToken initialToken;
 
 	@Autowired
 	VaultOperations vaultOperations;
 
 	/**
-	 * Write some data to Vault before Vault can be used as {@link VaultPropertySource}.
+	 * Write some data to Vault before Vault can be used as
+	 * {@link VaultPropertySource}.
 	 */
 	@BeforeAll
 	public static void beforeClass() {
 
+		VaultTemplate template = new VaultTemplate(TestSettings.endpoint(vaultContainer),
+				TestSettings.authentication());
 
-		VaultOperations vaultOperations = new VaultTestConfiguration().vaultTemplate();
-		vaultOperations.write("secret/myapp/configuration",
+		template.write("secret/myapp/configuration",
 				Collections.singletonMap("configuration.key", "value"));
 
-		VaultResponse response = vaultOperations
-				.doWithSession(new RestOperationsCallback<VaultResponse>() {
+		VaultResponse response = template.doWithSession(new RestOperationsCallback<VaultResponse>() {
 
-					@Override
-					public VaultResponse doWithRestOperations(
-							RestOperations restOperations) {
+			@Override
+			public VaultResponse doWithRestOperations(RestOperations restOperations) {
 
-						HttpHeaders headers = new HttpHeaders();
-						headers.add("X-Vault-Wrap-TTL", "10m");
+				HttpHeaders headers = new HttpHeaders();
+				headers.add("X-Vault-Wrap-TTL",
+						"10m");
 
-						return restOperations.postForObject("auth/token/create",
-								new HttpEntity<Object>(headers), VaultResponse.class);
-					}
-				});
+				return restOperations.postForObject("auth/token/create", new HttpEntity<Object>(headers),
+						VaultResponse.class);
+			}
+
+		});
 
 		// Response Wrapping requires Vault 0.6.0+
 		Map<String, String> wrapInfo = response.getWrapInfo();
 		initialToken = VaultToken.of(wrapInfo.get("token"));
+
 	}
 
 	/**
@@ -136,11 +121,11 @@ public class CubbyholeAuthenticationTests {
 	 * Java Configuration to bootstrap Spring Vault.
 	 */
 	@Configuration
-	static class VaultConfiguration extends AbstractVaultConfiguration {
+	static class VaultConfiguration extends VaultTestConfiguration {
 
 		@Override
 		public VaultEndpoint vaultEndpoint() {
-			return new VaultEndpoint();
+			return TestSettings.endpoint(vaultContainer);
 		}
 
 		@Override
@@ -155,9 +140,6 @@ public class CubbyholeAuthenticationTests {
 			return new CubbyholeAuthentication(options, restOperations());
 		}
 
-		@Override
-		public SslConfiguration sslConfiguration() {
-			return ExamplesSslConfiguration.create();
-		}
 	}
+
 }

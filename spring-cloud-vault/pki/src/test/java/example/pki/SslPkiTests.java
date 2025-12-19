@@ -17,7 +17,11 @@ package example.pki;
 
 import javax.net.ssl.SSLHandshakeException;
 
+import example.VaultContainers;
 import org.junit.jupiter.api.Test;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.vault.VaultContainer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,63 +29,70 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.vault.config.AbstractVaultConfiguration.ClientFactoryWrapper;
 import org.springframework.web.client.ResourceAccessException;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Fail.fail;
 
 /**
- * Spring Cloud Vault Config is active for Spring Boot applications and within tests.
+ * Spring Cloud Vault Config is active for Spring Boot applications and within
+ * tests.
  *
  * @author Mark Paluch
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ContextConfiguration(classes = CertificateOnDemandApplication.class)
+@Testcontainers
 public class SslPkiTests {
 
-	@Autowired
-	Environment environment;
+	@Container
+	static VaultContainer<?> vaultContainer = VaultContainers.create(it -> {
+		it.withInitCommand("secrets enable pki");
+		it.withInitCommand("write pki/root/generate/internal common_name=integration-test");
+		it.withInitCommand(
+				"write pki/roles/test-role allowed_domains=localhost,example.com allow_localhost=true max_ttl=72h");
+	});
 
 	@Autowired
-	ClientFactoryWrapper configuredWrapper;
+	RestClient client;
 
 	@LocalServerPort
 	private int port;
 
 	/**
 	 * The configured client truststore contains just the Root CA certificate. The
-	 * intermediate and server certificates are provided by the server SSL configuration.
+	 * intermediate and server certificates are provided by the server SSL
+	 * configuration.
 	 */
 	@Test
 	public void shouldWorkWithGeneratedSslCertificate() {
 
-		RestTemplate restTemplate = new RestTemplate(
-				configuredWrapper.getClientHttpRequestFactory());
-
-		ResponseEntity<String> response = restTemplate
-				.getForEntity("https://localhost:" + port, String.class);
+		ResponseEntity<String> response = client.get()
+				.uri("https://localhost:" + port)
+				.retrieve().toEntity(String.class);
 
 		assertThat(response.getStatusCode().value()).isEqualTo(200);
 		assertThat(response.getBody()).isEqualTo("Hello, World");
 	}
 
 	/**
-	 * Plain {@link RestTemplate} without the Root CA configured. Assuming the Root CA
+	 * Plain {@link RestClient} without the Root CA configured. Assuming the Root CA
 	 * certificate is unknown to the default truststore, the request should fail.
 	 */
 	@Test
 	public void clientShouldRejectUnknownRootCertificate() {
 
-		RestTemplate restTemplate = new RestTemplate();
+		RestClient vanilla = RestClient.create();
 
 		try {
-			restTemplate.getForEntity("https://localhost:" + port, String.class);
+			vanilla.get()
+					.uri("https://localhost:" + port)
+					.retrieve().toEntity(String.class);
 			fail("Missing ResourceAccessException that wraps SSLHandshakeException");
-		}
-		catch (ResourceAccessException e) {
+		} catch (ResourceAccessException e) {
 			assertThat(e).hasCauseInstanceOf(SSLHandshakeException.class);
 		}
 	}
+
 }

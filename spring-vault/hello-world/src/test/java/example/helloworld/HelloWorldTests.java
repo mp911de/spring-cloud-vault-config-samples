@@ -15,37 +15,53 @@
  */
 package example.helloworld;
 
-import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Test;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.vault.core.VaultOperations;
-import org.springframework.vault.support.VaultResponseSupport;
-
-import static org.assertj.core.api.Assertions.*;
-
+import example.TestSettings;
+import example.VaultContainers;
+import example.helloworld.HelloWorldTests.Config;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.vault.VaultContainer;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.vault.client.VaultEndpoint;
 import org.springframework.vault.core.VaultOperations;
 import org.springframework.vault.support.VaultResponseSupport;
+
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * Simple interaction with {@link VaultOperations}.
  *
  * @author Mark Paluch
  */
-@ContextConfiguration(classes = VaultTestConfiguration.class)
+@ContextConfiguration(classes = Config.class)
 @ExtendWith(SpringExtension.class)
 @Slf4j
+@Testcontainers
 public class HelloWorldTests {
+
+	@Container
+	static VaultContainer<?> vaultContainer = VaultContainers.create(it -> {
+		it.withInitCommand("secrets disable secret/");
+		it.withInitCommand("secrets enable -path=secret -version=1 kv");
+	});
+
+	@Configuration
+	static class Config extends VaultTestConfiguration {
+
+		@Override
+		public VaultEndpoint vaultEndpoint() {
+			return TestSettings.endpoint(vaultContainer);
+		}
+
+	}
 
 	@Autowired
 	VaultOperations vaultOperations;
@@ -73,6 +89,9 @@ public class HelloWorldTests {
 	static class MySecretData {
 
 		String securityQuestion;
+
 		String answer;
+
 	}
+
 }

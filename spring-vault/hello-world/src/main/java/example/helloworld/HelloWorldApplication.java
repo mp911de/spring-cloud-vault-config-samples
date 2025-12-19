@@ -15,9 +15,12 @@
  */
 package example.helloworld;
 
-import example.ExamplesSslConfiguration;
+import example.TestSettings;
+import example.VaultContainers;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.testcontainers.shaded.org.bouncycastle.util.test.Test;
+import org.testcontainers.vault.VaultContainer;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +29,6 @@ import org.springframework.vault.authentication.TokenAuthentication;
 import org.springframework.vault.client.VaultEndpoint;
 import org.springframework.vault.config.AbstractVaultConfiguration;
 import org.springframework.vault.core.VaultTemplate;
-import org.springframework.vault.support.SslConfiguration;
 import org.springframework.vault.support.VaultResponseSupport;
 
 /**
@@ -37,7 +39,14 @@ import org.springframework.vault.support.VaultResponseSupport;
 @Slf4j
 public class HelloWorldApplication {
 
+	static VaultContainer<?> vaultContainer = VaultContainers.create(it -> {
+		it.withInitCommand("secrets disable secret/");
+		it.withInitCommand("secrets enable -path=secret -version=1 kv");
+	});
+
 	public static void main(String[] args) {
+
+		vaultContainer.start();
 
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
 				VaultConfiguration.class);
@@ -66,24 +75,23 @@ public class HelloWorldApplication {
 
 		@Override
 		public VaultEndpoint vaultEndpoint() {
-			return new VaultEndpoint();
+			return TestSettings.endpoint(vaultContainer);
 		}
 
 		@Override
 		public ClientAuthentication clientAuthentication() {
-			return new TokenAuthentication("00000000-0000-0000-0000-000000000000");
+			return TestSettings.authentication();
 		}
 
-		@Override
-		public SslConfiguration sslConfiguration() {
-			return ExamplesSslConfiguration.create();
-		}
 	}
 
 	@Data
 	static class MySecretData {
 
 		String username;
+
 		String password;
+
 	}
+
 }

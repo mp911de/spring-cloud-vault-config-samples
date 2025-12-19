@@ -13,7 +13,7 @@
 	<artifactId>spring-cloud-vault-config-pki-example</artifactId>
 
 	<name>Spring Cloud Vault Config for PKI</name>
-	<description>Demo project using Spring Vault obtaining a SSL certificate from Vault</description>
+	<description>Demo project using Spring Vault obtaining an SSL certificate from Vault</description>
 
 	<dependencies>
 
@@ -23,8 +23,32 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-vault-config</artifactId>
+			<version>5.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.vault</groupId>
+			<artifactId>spring-vault-core</artifactId>
+			<version>4.1.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-restclient</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.vault.examples</groupId>
+			<artifactId>spring-vault-examples-util</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
 		</dependency>
 
 	</dependencies>

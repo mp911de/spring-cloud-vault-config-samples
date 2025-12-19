@@ -18,16 +18,23 @@ package example.helloworld;
 import java.util.Collections;
 import java.util.Map;
 
+import example.TestSettings;
+import example.VaultContainers;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.vault.VaultContainer;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.vault.VaultException;
+import org.springframework.vault.client.VaultEndpoint;
 import org.springframework.vault.core.VaultKeyValueOperations;
 import org.springframework.vault.core.VaultKeyValueOperationsSupport.KeyValueBackend;
 import org.springframework.vault.core.VaultOperations;
@@ -44,10 +51,28 @@ import static org.assertj.core.api.Assertions.*;
  *
  * @author Mark Paluch
  */
-@ContextConfiguration(classes = VaultTestConfiguration.class)
+@ContextConfiguration
 @ExtendWith(SpringExtension.class)
 @Slf4j
+@Testcontainers
 public class KeyValueTests {
+
+	@Container
+	static VaultContainer<?> vaultContainer = VaultContainers.create(it -> {
+		it.withInitCommand("secrets disable secret/");
+		it.withInitCommand("secrets enable -path=secret -version=1 kv");
+		it.withInitCommand("secrets enable -path=versioned -version=2 kv");
+	});
+
+	@Configuration
+	static class Config extends VaultTestConfiguration {
+
+		@Override
+		public VaultEndpoint vaultEndpoint() {
+			return TestSettings.endpoint(vaultContainer);
+		}
+
+	}
 
 	@Autowired
 	VaultOperations vaultOperations;

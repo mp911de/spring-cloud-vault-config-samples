@@ -36,6 +36,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class CertificateOnDemandApplication {
 
 	public static void main(String[] args) {
+
+		SslPkiTests.vaultContainer.start();
 		SpringApplication.run(CertificateOnDemandApplication.class);
 	}
 

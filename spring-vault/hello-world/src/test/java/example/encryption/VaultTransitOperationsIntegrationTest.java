@@ -17,33 +17,27 @@ package example.encryption;
 
 import java.nio.charset.StandardCharsets;
 
-import example.helloworld.VaultTestConfiguration;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.vault.core.VaultOperations;
-import org.springframework.vault.core.VaultTransitOperations;
-import org.springframework.vault.support.VaultTransitContext;
-
-import static org.assertj.core.api.Java6Assertions.*;
-
+import example.TestSettings;
+import example.VaultContainers;
 import example.helloworld.VaultTestConfiguration;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.vault.VaultContainer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.vault.client.VaultEndpoint;
 import org.springframework.vault.core.VaultOperations;
 import org.springframework.vault.core.VaultTransitOperations;
 import org.springframework.vault.support.VaultTransitContext;
+
+import static org.assertj.core.api.Java6Assertions.*;
 
 /**
  * Integration test using {@link VaultTransitOperations}.
@@ -53,10 +47,22 @@ import org.springframework.vault.support.VaultTransitContext;
 @ContextConfiguration
 @ExtendWith(SpringExtension.class)
 @Slf4j
+@Testcontainers
 public class VaultTransitOperationsIntegrationTest {
+
+	@Container
+	static VaultContainer<?> vaultContainer = VaultContainers.create(it -> {
+		it.withInitCommand("secrets enable transit");
+	});
 
 	@Configuration
 	static class Config extends VaultTestConfiguration {
+
+		@Override
+		public VaultEndpoint vaultEndpoint() {
+			return TestSettings.endpoint(vaultContainer);
+		}
+
 	}
 
 	@Autowired
@@ -106,4 +112,5 @@ public class VaultTransitOperationsIntegrationTest {
 
 		assertThat(plaintext).hasSize(input.length).isEqualTo(plaintext);
 	}
+
 }

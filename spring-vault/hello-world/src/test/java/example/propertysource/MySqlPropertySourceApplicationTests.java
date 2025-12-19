@@ -22,14 +22,17 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import javax.net.ServerSocketFactory;
 
+import example.TestSettings;
+import example.VaultContainers;
 import example.helloworld.VaultTestConfiguration;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.vault.VaultContainer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,13 +41,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.vault.annotation.VaultPropertySource;
+import org.springframework.vault.client.VaultEndpoint;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assumptions.*;
 
 /**
- * Integration test using {@link VaultPropertySource} to connect MySQL with generated
- * credentials.
+ * Integration test using {@link VaultPropertySource} to connect MySQL with
+ * generated credentials.
  *
  * @author Mark Paluch
  */
@@ -53,9 +57,20 @@ import static org.assertj.core.api.Assumptions.*;
 @Slf4j
 public class MySqlPropertySourceApplicationTests {
 
+	@Container
+	static VaultContainer<?> vaultContainer = VaultContainers.create(it -> {
+		it.withInitCommand("secrets enable mysql");
+	});
+
 	@ComponentScan
 	@VaultPropertySource(value = "mysql/creds/readonly", propertyNamePrefix = "database.")
 	static class Config extends VaultTestConfiguration {
+
+		@Override
+		public VaultEndpoint vaultEndpoint() {
+			return TestSettings.endpoint(vaultContainer);
+		}
+
 	}
 
 	@Autowired
@@ -74,8 +89,7 @@ public class MySqlPropertySourceApplicationTests {
 					.createServerSocket(port, 1, InetAddress.getByName("localhost"));
 			serverSocket.close();
 			return true;
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			return false;
 		}
 	}
@@ -115,5 +129,7 @@ public class MySqlPropertySourceApplicationTests {
 		public String getPassword() {
 			return password;
 		}
+
 	}
+
 }

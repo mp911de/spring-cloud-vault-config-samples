@@ -15,6 +15,7 @@
  */
 package example.repositories;
 
+import example.VaultContainers;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ import org.springframework.vault.support.VaultResponse;
 import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.vault.VaultContainer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -37,7 +41,14 @@ import org.springframework.vault.support.VaultResponse;
  * @author Mark Paluch
  */
 @SpringBootTest
+@Testcontainers
 public class RepositoryTests {
+
+	@Container
+	static VaultContainer<?> vaultContainer = VaultContainers.create(it -> {
+		it.withInitCommand("secrets disable secret/");
+		it.withInitCommand("secrets enable -path=secret -version=1 kv");
+	});
 
 	@Autowired
 	PersonRepository repository;

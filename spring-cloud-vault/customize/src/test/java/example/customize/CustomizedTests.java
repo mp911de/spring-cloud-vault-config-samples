@@ -15,9 +15,14 @@
  */
 package example.customize;
 
+import example.VaultContainers;
 import org.junit.jupiter.api.Test;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.vault.VaultContainer;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.vault.config.VaultBootstrapper;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
@@ -29,7 +34,14 @@ import static org.assertj.core.api.Assertions.*;
  *
  * @author Mark Paluch
  */
+@Testcontainers
 public class CustomizedTests {
+
+	@Container
+	static VaultContainer<?> vaultContainer = VaultContainers.create(it -> {
+		it.withInitCommand("secrets enable -path=cf -version=1 kv");
+		it.withInitCommand("kv put cf/1a558498-59ad-488c-b395-8b983aacb7da/secret/my-cf-app my-key=cf org-key=hello-world-org index=3");
+	});
 
 	@Test
 	public void shouldHaveVaultProperties() {

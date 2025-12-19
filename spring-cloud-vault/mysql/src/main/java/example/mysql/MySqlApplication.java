@@ -29,7 +29,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * Sample Application using Spring Cloud Vault with Token authentication. Vault will
- * obtain MySQL credentials to be used with a {@link javax.activation.DataSource}.
+ * obtain MySQL credentials to be used with a {@link javax.sql.DataSource}.
  *
  * @author Mark Paluch
  */

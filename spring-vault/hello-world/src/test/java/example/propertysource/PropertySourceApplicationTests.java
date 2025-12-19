@@ -15,9 +15,15 @@
  */
 package example.propertysource;
 
+import example.TestSettings;
+import example.VaultContainers;
 import example.helloworld.VaultTestConfiguration;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.vault.VaultContainer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,21 +33,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.vault.annotation.VaultPropertySource;
+import org.springframework.vault.client.VaultEndpoint;
 
 import static org.assertj.core.api.Java6Assertions.*;
-
-import example.helloworld.VaultTestConfiguration;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Component;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.vault.annotation.VaultPropertySource;
 
 /**
  * Integration test using {@link VaultPropertySource}.
@@ -51,11 +45,23 @@ import org.springframework.vault.annotation.VaultPropertySource;
 @ContextConfiguration
 @ExtendWith(SpringExtension.class)
 @Slf4j
+@Testcontainers
 public class PropertySourceApplicationTests {
+
+	@Container
+	static VaultContainer<?> vaultContainer = VaultContainers.create(it -> {
+		it.withInitCommand("kv put secret/my-spring-app database.username=myuser database.password=mypassword");
+	});
 
 	@ComponentScan
 	@VaultPropertySource("secret/my-spring-app")
 	static class Config extends VaultTestConfiguration {
+
+		@Override
+		public VaultEndpoint vaultEndpoint() {
+			return TestSettings.endpoint(vaultContainer);
+		}
+
 	}
 
 	@Autowired
@@ -103,5 +109,7 @@ public class PropertySourceApplicationTests {
 		public String getPassword() {
 			return password;
 		}
+
 	}
+
 }

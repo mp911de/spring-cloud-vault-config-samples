@@ -17,32 +17,18 @@ package example.repositories;
 
 import java.util.Optional;
 
-import example.ExamplesSslConfiguration;
+import example.TestSettings;
+import example.VaultContainers;
 import lombok.extern.slf4j.Slf4j;
+import org.testcontainers.vault.VaultContainer;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.vault.authentication.ClientAuthentication;
-import org.springframework.vault.authentication.TokenAuthentication;
 import org.springframework.vault.client.VaultEndpoint;
 import org.springframework.vault.config.AbstractVaultConfiguration;
 import org.springframework.vault.core.VaultTemplate;
 import org.springframework.vault.repository.configuration.EnableVaultRepositories;
-import org.springframework.vault.support.SslConfiguration;
-import org.springframework.vault.support.VaultResponse;
-
-import example.ExamplesSslConfiguration;
-import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.vault.authentication.ClientAuthentication;
-import org.springframework.vault.authentication.TokenAuthentication;
-import org.springframework.vault.client.VaultEndpoint;
-import org.springframework.vault.config.AbstractVaultConfiguration;
-import org.springframework.vault.core.VaultTemplate;
-import org.springframework.vault.repository.configuration.EnableVaultRepositories;
-import org.springframework.vault.support.SslConfiguration;
 import org.springframework.vault.support.VaultResponse;
 
 /**
@@ -53,7 +39,14 @@ import org.springframework.vault.support.VaultResponse;
 @Slf4j
 public class RepositoryApplication {
 
+	static VaultContainer<?> vaultContainer = VaultContainers.create(it -> {
+		it.withInitCommand("secrets disable secret/");
+		it.withInitCommand("secrets enable -path=secret -version=1 kv");
+	});
+
 	public static void main(String[] args) {
+
+		vaultContainer.start();
 
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
 				VaultConfiguration.class);
@@ -90,17 +83,14 @@ public class RepositoryApplication {
 
 		@Override
 		public VaultEndpoint vaultEndpoint() {
-			return new VaultEndpoint();
+			return TestSettings.endpoint(vaultContainer);
 		}
 
 		@Override
 		public ClientAuthentication clientAuthentication() {
-			return new TokenAuthentication("00000000-0000-0000-0000-000000000000");
+			return TestSettings.authentication();
 		}
 
-		@Override
-		public SslConfiguration sslConfiguration() {
-			return ExamplesSslConfiguration.create();
-		}
 	}
+
 }

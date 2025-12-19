@@ -15,53 +15,26 @@
  */
 package example.helloworld;
 
-import example.ExamplesSslConfiguration;
+import example.TestSettings;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.vault.authentication.ClientAuthentication;
 import org.springframework.vault.authentication.SimpleSessionManager;
-import org.springframework.vault.authentication.TokenAuthentication;
 import org.springframework.vault.client.ClientHttpRequestFactoryFactory;
-import org.springframework.vault.client.VaultEndpoint;
 import org.springframework.vault.config.AbstractVaultConfiguration;
 import org.springframework.vault.core.VaultTemplate;
-import org.springframework.vault.support.SslConfiguration;
-
-import example.ExamplesSslConfiguration;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.vault.authentication.ClientAuthentication;
-import org.springframework.vault.authentication.SimpleSessionManager;
-import org.springframework.vault.authentication.TokenAuthentication;
-import org.springframework.vault.client.ClientHttpRequestFactoryFactory;
-import org.springframework.vault.client.VaultEndpoint;
-import org.springframework.vault.config.AbstractVaultConfiguration;
-import org.springframework.vault.core.VaultTemplate;
-import org.springframework.vault.support.SslConfiguration;
 
 /**
  * Java Configuration to bootstrap Spring Vault.
  */
 @Configuration
-public class VaultTestConfiguration extends AbstractVaultConfiguration {
-
-	@Override
-	public VaultEndpoint vaultEndpoint() {
-		return new VaultEndpoint();
-	}
+public abstract class VaultTestConfiguration extends AbstractVaultConfiguration {
 
 	@Override
 	public ClientAuthentication clientAuthentication() {
-		return new TokenAuthentication("00000000-0000-0000-0000-000000000000");
-	}
-
-	@Override
-	public SslConfiguration sslConfiguration() {
-		return ExamplesSslConfiguration.create();
+		return TestSettings.authentication();
 	}
 
 	@Bean
@@ -73,4 +46,5 @@ public class VaultTestConfiguration extends AbstractVaultConfiguration {
 		return new VaultTemplate(vaultEndpoint(), factory,
 				new SimpleSessionManager(clientAuthentication()));
 	}
+
 }
