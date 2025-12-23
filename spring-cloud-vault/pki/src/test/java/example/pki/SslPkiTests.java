@@ -55,7 +55,7 @@ public class SslPkiTests {
 	});
 
 	@Autowired
-	RestClient client;
+	RestClient.Builder clientBuilder;
 
 	@LocalServerPort
 	private int port;
@@ -68,7 +68,7 @@ public class SslPkiTests {
 	@Test
 	public void shouldWorkWithGeneratedSslCertificate() {
 
-		ResponseEntity<String> response = client.get()
+		ResponseEntity<String> response = clientBuilder.build().get()
 				.uri("https://localhost:" + port)
 				.retrieve().toEntity(String.class);
 
